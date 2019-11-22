@@ -95,46 +95,45 @@
                 tableHeader: [
                     {
                         prop: 'id',
-                        label: 'ID',
-                        'min-width': 40,
+                        label: '实例ID',
+                        'min-width': 60,
+                        align: 'center',
+                    },                    {
+                        prop: 'jobId',
+                        label: '任务ID',
+                        'min-width': 60,
                         align: 'center',
                     },
                     {
                         prop: 'taskState',
-                        label: '任务状态',
+                        label: '实例状态',
                         'min-width': 80,
                         align: 'center',
                     },
                     {
                         prop: 'scheduleTime',
-                        label: '任务调度时间',
+                        label: '实例调度时间',
                         'min-width': 120,
                         align: 'center',
                     },
                     {
                         prop: 'startTime',
-                        label: '任务开始时间',
+                        label: '实例开始时间',
                         'min-width': 100,
                         align: 'center',
                     },
                     {
                         prop: 'endTime',
-                        label: '任务结束时间',
+                        label: '实例结束时间',
                         'min-width': 120,
                         align: 'center',
                     },
                     {
                         prop: 'worker',
-                        label: '任务执行节点',
+                        label: '实例执行节点',
                         'min-width': 120,
                         align: 'center',
-                    },
-                    {
-                        prop: 'pid',
-                        label: '任务进程号',
-                        'min-width': 120,
-                        align: 'center',
-                    },
+                    }
                 ]
             };
         },
@@ -168,8 +167,8 @@
                 };
                 this.$http.get('/jobInstance/paging', {params: params}).then(({body}) => {
                     if (body.errorCode === 200) {
-                        this.tableData = responseText(body.data.records);
-                        this.pagination.total = body.data.records ? body.data.total : 0;
+                        this.tableData = responseText(body.data.list);
+                        this.pagination.total = body.data.list ? body.data.total : 0;
                     } else {
                         this.$message.error(body.errorMsg);
                     }

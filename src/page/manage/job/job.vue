@@ -75,7 +75,7 @@
                     <el-input v-model="messageForm.description" placeholder="请输入任务描述"></el-input>
                 </el-form-item>
                 <el-form-item label="任务依赖"  prop="dependIds">
-                    <el-input v-model="messageForm.dependIds" placeholder="请输入任务依赖，以逗号隔开"></el-input>
+                    <el-input v-model="messageForm.dependIds" placeholder="请输入任务依赖，以逗号隔开，空表示无依赖"></el-input>
                 </el-form-item>
 
 
@@ -128,10 +128,6 @@
                         <el-input v-model="messageForm.maxRetrytimes" placeholder="重试次数"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="重试间隔"  prop="retryInterval">
-                        <el-input v-model="messageForm.retryInterval" placeholder="重试间隔"></el-input>
-                    </el-form-item>
-
                     <el-form-item label="超时时间"  prop="executionTimeout">
                         <el-input v-model="messageForm.executionTimeout" placeholder="超时时间"></el-input>
                     </el-form-item>
@@ -178,9 +174,6 @@
                 messageRule: {
                     jobName: [
                         {required: true, message: '请输入任务名称', trigger: 'blur'}
-                    ],
-                    dependIds: [
-                        {required: true, message: '请输入任务依赖，以逗号隔开', trigger: 'blur'}
                     ],
                     jobConfiguration: [
                         {required: true, message: '请输入任务配置', trigger: 'blur'}
@@ -248,7 +241,7 @@
                 tableHeader: [
                     {
                         prop: 'id',
-                        label: 'ID',
+                        label: '任务ID',
                         'min-width': 40,
                         align: 'center',
                     },
@@ -321,8 +314,8 @@
                 };
                 this.$http.get('/job/paging', {params: params}).then(({body}) => {
                     if (body.errorCode === 200) {
-                        this.tableData = responseText(body.data.records);
-                        this.pagination.total = body.data.records ? body.data.total : 0;
+                        this.tableData = responseText(body.data.list);
+                        this.pagination.total = body.data.list ? body.data.total : 0;
                     } else {
                         this.$message.error(body.errorMsg);
                     }
@@ -378,7 +371,6 @@
                     scheduleCron: this.messageForm.scheduleCron,
                     jobCycle: this.messageForm.jobCycle,
                     maxRetrytimes: this.messageForm.maxRetrytimes,
-                    retryInterval: this.messageForm.retryInterval,
                     executionTimeout: this.messageForm.executionTimeout,
                     description: this.messageForm.description,
                     jobConfiguration: this.messageForm.jobConfiguration,

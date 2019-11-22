@@ -69,7 +69,7 @@
                 tableHeader: [
                     {
                         prop: 'id',
-                        label: 'ID',
+                        label: '资源ID',
                         'min-width': 40,
                         align: 'center',
                     },
@@ -142,8 +142,8 @@
                 };
                 this.$http.get('/worker/paging', {params: params}).then(({body}) => {
                     if (body.errorCode === 200) {
-                        this.tableData = responseText(body.data.records);
-                        this.pagination.total = body.data.records ? body.data.total : 0;
+                        this.tableData = responseText(body.data.list);
+                        this.pagination.total = body.data.list ? body.data.total : 0;
                     } else {
                         this.$message.error(body.errorMsg);
                     }
