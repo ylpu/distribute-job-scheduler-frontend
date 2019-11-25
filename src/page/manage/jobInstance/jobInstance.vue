@@ -193,7 +193,6 @@
             batchRerun() {
                 let ids = '';
                 this.multipleSelection.forEach(selectedItem => {
-                    // 删除请求
                     ids += selectedItem.id + ',';
                 });
                 let params = {
@@ -207,7 +206,7 @@
                         this.$message.error(body.errorMsg);
                     }
                 }).catch(() => {
-                    this.$message.error('删除失败');
+                    this.$message.error('批量重跑失败');
                 })
             },
             kill(id) {
@@ -218,7 +217,6 @@
             },
             viewLog(url) {
                 this.logVisible = true;
-                this.logForm.logContent = 'test';
                 let params = {
                     logPath: url
                 };

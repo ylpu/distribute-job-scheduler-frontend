@@ -74,7 +74,7 @@
                     <el-input v-model="messageForm.description" placeholder="请输入任务描述"></el-input>
                 </el-form-item>
                 <el-form-item label="任务依赖"  prop="dependIds">
-                    <el-input v-model="messageForm.dependIds" placeholder="请输入任务依赖，以逗号隔开，空表示无依赖"></el-input>
+                    <el-input v-model="messageForm.dependIds" placeholder="请输入任务依赖，任务id以逗号隔开(空表示无依赖)"></el-input>
                 </el-form-item>
 
                     <el-form-item label="任务优先级"  prop="jobPriority">
@@ -152,7 +152,7 @@
                    class="user-dialog">
             <div class="text-center" style="height: 400px">
                 <vue2-org-tree
-                        name="test"
+                        name="jobTree"
                         :data="treeData"
                         :horizontal="horizontal"
                         :collapsable="collapsable"

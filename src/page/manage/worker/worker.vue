@@ -7,7 +7,7 @@
                 @handleCurrentChange="handleCurrentChange">
             <div slot="banner" class="top-right">
 
-                <el-select v-model="nodeGroup" placeholder="请选择执行组" class="right-select" @change="queryTypeChange"
+                <el-select v-model="workerGroup" placeholder="请选择执行组" class="right-select" @change="queryTypeChange"
                            clearable @clear="queryList">
                     <el-option label="hive" value="hive">hive</el-option>
                     <el-option label="spark" value="spark">spark</el-option>
@@ -53,7 +53,7 @@
         name: "server",
         data() {
             return {
-                nodeGroup: '',
+                workerGroup: '',
                 worker: '',
                 pagination: {
                     pageIndex: 1,
@@ -68,19 +68,13 @@
                 loginLoading: false,
                 tableHeader: [
                     {
-                        prop: 'id',
-                        label: '资源ID',
-                        'min-width': 40,
-                        align: 'center',
-                    },
-                    {
                         prop: 'host',
                         label: '执行机器',
                         'min-width': 80,
                         align: 'center',
                     },
                     {
-                        prop: 'nodeGroup',
+                        prop: 'workerGroup',
                         label: '执行机器组',
                         'min-width': 120,
                         align: 'center',
@@ -104,7 +98,7 @@
                         align: 'center',
                     },
                     {
-                        prop: 'nodeStatus',
+                        prop: 'workerStatus',
                         label: '节点状态',
                         'min-width': 120,
                         align: 'center',
@@ -135,7 +129,7 @@
             queryList() {
                 this.loginLoading = true;
                 let params = {
-                    nodeGroup: this.nodeGroup,
+                    workerGroup: this.workerGroup,
                     worker: this.worker,
                     pageNo: this.pagination.pageIndex,
                     pageSize: this.pagination.pageSize
