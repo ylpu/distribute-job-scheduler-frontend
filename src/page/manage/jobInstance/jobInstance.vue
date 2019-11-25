@@ -5,12 +5,11 @@
                 :label="label"
                 @handleSizeChange="handleSizeChange"
                 @handleCurrentChange="handleCurrentChange">
-            <div slot="banner" class="top-right">
 
+            <div slot="banner" class="top-right">
                 <el-select v-model="taskState" placeholder="请选择任务状态" class="right-select" @change="queryTypeChange"
                            clearable @clear="queryList">
                     <el-option label="SUBMIT" value="1">SUBMIT</el-option>
-                    <el-option label="PENDING" value="2">PENDING</el-option>
                     <el-option label="WAITING" value="3">WAITING</el-option>
                     <el-option label="RUNNING" value="4">RUNNING</el-option>
                     <el-option label="KILL" value="5">KILL</el-option>
@@ -21,6 +20,7 @@
                 <el-input placeholder="任务指执行机器" v-model="worker" class="input-with-select" clearable>
                     <el-button slot="append" icon="el-icon-search" @click="queryList"></el-button>
                 </el-input>
+                <el-button type="primary" size="small" @click="batchRerun" slot="reference">批量重跑</el-button> &nbsp;
 
             </div>
             <div slot="main" class="main-body">
@@ -66,6 +66,14 @@
             </div>
 
         </lyz-layout>
+        <el-dialog :title="'日志详情'" :visible.sync="logVisible" width="70%" center
+                   class="user-dialog">
+            <el-form :model="logForm" :label-width="messageLabelWidth" ref="logForm" >
+                <el-form-item label=""  prop="logContent">
+                    <el-input type="textarea"  readonly="true" :autosize="{minRows:20}" v-model="logForm.logContent" clearable placeholder="任务日志详情"></el-input>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -87,7 +95,9 @@
                 },
                 label: '任务实例管理',
                 messageForm: {},
+                logForm: {},
                 messageVisible: false,
+                logVisible:false,
                 messageLabelWidth: '90px',
                 multipleSelection: [],//多选的数据
                 tableData: [],
@@ -180,7 +190,7 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            batchRemove() {
+            batchRerun() {
                 let ids = '';
                 this.multipleSelection.forEach(selectedItem => {
                     // 删除请求
@@ -189,7 +199,7 @@
                 let params = {
                     ids: ids
                 };
-                this.$http.post("/jobInstance/batchRemove", {}, {params: params}).then(({body}) => {
+                this.$http.post("/jobInstance/batchRerun", {}, {params: params}).then(({body}) => {
                     if (body.success === true) {
                         this.queryList();
                         this.$message.success(body.errorMsg);
@@ -207,7 +217,20 @@
                 this.save('/jobInstance/kill', params);
             },
             viewLog(url) {
-                this.save(url);
+                this.logVisible = true;
+                this.logForm.logContent = 'test';
+                let params = {
+                    logPath: url
+                };
+                this.$http.get('/jobInstance/viewLog', {params: params}).then(({body}) => {
+                    if (body.errorCode === 200) {
+                        this.logForm.logContent = body.data;
+                    } else {
+                        this.$message.error(body.errorMsg);
+                    }
+                }).finally(() => {
+                    this.loginLoading = false;
+                })
             },
             rerun(id) {
                 let params = {

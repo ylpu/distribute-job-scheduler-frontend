@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import job from '@/page/manage/job/job'
 import jobInstance from '@/page/manage/jobInstance/jobInstance'
 import worker from '@/page/manage/worker/worker'
-import message from "../page/manage/message/message";
+import chart from '@/page/manage/chart/chart'
 
 Vue.use(Router);
 const routerConfig = [
@@ -11,6 +11,15 @@ const routerConfig = [
         path: '/',
         redirect: '/job',
 
+    },
+    {
+        path: '/chart',
+        name: '任务分布',
+        icon: 'el-icon-menu',
+        component: chart,
+        meta: {
+            requireAuth: true, // 判断是否需要登录
+        },
     },
     {
         path: '/job',

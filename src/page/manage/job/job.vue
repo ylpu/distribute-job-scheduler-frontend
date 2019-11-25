@@ -15,7 +15,7 @@
                     <el-option label="spark" value="3">spark</el-option>
                 </el-select>
 
-                <el-input placeholder="请输入搜索内容" v-model="jobName" class="input-with-select" clearable>
+                <el-input placeholder="任务名称" v-model="jobName" class="input-with-select" clearable>
                     <el-button slot="append" icon="el-icon-search" @click="queryList"></el-button>
                 </el-input>
 
@@ -27,9 +27,7 @@
                         v-loading="loginLoading"
                         tooltip-effect="light"
                         height="100%"
-                        style="width: 100%"
-                        @selection-change="handleSelectionChange">
-                    <el-table-column type="selection" width="55"></el-table-column>
+                        style="width: 100%">
                     <el-table-column
                             v-for="(data,index) in tableHeader"
                             :show-overflow-tooltip="true"
@@ -64,7 +62,8 @@
 
         </lyz-layout>
         <el-dialog :title="operate==='update'?'修改任务':'添加任务'" :visible.sync="messageVisible" width="70%" center
-                   class="user-dialog">
+                   class="user-dialog" @close='closeDialog'>
+
             <el-form :model="messageForm" :label-width="messageLabelWidth" ref="messageForm" :rules="messageRule"
                      :validate-on-rule-change=false>
 
@@ -77,7 +76,6 @@
                 <el-form-item label="任务依赖"  prop="dependIds">
                     <el-input v-model="messageForm.dependIds" placeholder="请输入任务依赖，以逗号隔开，空表示无依赖"></el-input>
                 </el-form-item>
-
 
                     <el-form-item label="任务优先级"  prop="jobPriority">
                         <el-select v-model="messageForm.jobPriority" placeholder="请选择任务优先级">
@@ -133,19 +131,36 @@
                     </el-form-item>
                     <el-form-item label="任务工作组"  prop="workerGroupname">
                         <el-select v-model="messageForm.workerGroupname" placeholder="任务工作组" class="right-select">
-                            <el-option label="SHELL" value="SHELL">SHELL</el-option>
-                            <el-option label="HIVE" value="HIVE">HIVE</el-option>
-                            <el-option label="SPARK" value="SPARK">SPARK</el-option>
+                            <el-option
+                                    v-for="item in workerGroupOption"
+                                    :key="item"
+                                    :label="item"
+                                    :value="item">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="任务配置"  prop="jobConfiguration">
-                        <el-input type="textarea"  v-model="messageForm.jobConfiguration" clearable placeholder="请输入任务配置"></el-input>
+                        <el-input type="textarea"  :autosize="{minRows:5}" v-model="messageForm.jobConfiguration" clearable placeholder="请输入任务配置"></el-input>
                     </el-form-item>
-                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="messageVisible = false">取 消</el-button>
+                <el-button @click=closeDialog>取 消</el-button>
                 <el-button type="primary" @click=saveJob>确 定</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog :title="'任务图'" :visible.sync="jobTreeVisible" width="70%" center
+                   class="user-dialog">
+            <div class="text-center" style="height: 400px">
+                <vue2-org-tree
+                        name="test"
+                        :data="treeData"
+                        :horizontal="horizontal"
+                        :collapsable="collapsable"
+                        :label-class-name="labelClassName"
+                        :render-content="renderContent"
+                        @on-expand="onExpand"
+                        @on-node-click="onNodeClick"
+                />
             </div>
         </el-dialog>
     </div>
@@ -169,8 +184,14 @@
                 },
                 label: '任务管理',
                 messageForm: {},
+                treeData: {},
                 messageVisible: false,
+                jobTreeVisible: false,
                 messageLabelWidth: '120px',
+                horizontal: true,
+                collapsable: true,
+                expandAll: false,
+                labelClassName: "bg-tomato",
                 messageRule: {
                     jobName: [
                         {required: true, message: '请输入任务名称', trigger: 'blur'}
@@ -201,42 +222,8 @@
                     ]
                 },
                 operate: '',
-                multipleSelection: [],//多选的数据
-                pickerOptions: {
-                    shortcuts: [{
-                        text: '今天',
-                        onClick(picker) {
-                            picker.$emit('pick', new Date());
-                        }
-                    }, {
-                        text: '一天后',
-                        onClick(picker) {
-                            const date = new Date();
-                            date.setTime(date.getTime() + 3600 * 1000 * 24);
-                            picker.$emit('pick', date);
-                        }
-                    }, {
-                        text: '一周后',
-                        onClick(picker) {
-                            const date = new Date();
-                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
-                            picker.$emit('pick', date);
-                        }
-                    }, {
-                        text: '一月后',
-                        onClick(picker) {
-                            const date = new Date();
-                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', date);
-                        }
-                    }],
-                    disabledDate: function (now) {
-                        if (now < new Date(new Date().setDate(new Date().getDate()-1)))
-                            return true;
-                        return false
-                    }
-                },
                 tableData: [],
+                workerGroupOption :[],
                 loginLoading: false,
                 tableHeader: [
                     {
@@ -323,10 +310,6 @@
                     this.loginLoading = false;
                 })
             },
-
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
             scheduleJob(id) {
                 let params = {
                     id: id,
@@ -340,13 +323,26 @@
                 this.save('/job/downJob', params);
             },
             jobTree(id) {
-                let params = {
-                    id: id,
-                };
-                this.save('/job/jobTree', params);
+                this.jobTreeVisible = true;
+                this.$http.get('/job/queryTreeById/' + id).then(({body}) => {
+                    if (body.errorCode === 200) {
+                        this.treeData = body.data;
+                    }
+                }).finally(() => {
+                    this.loginLoading = false;
+                })
             },
             updateJob(row) {
                 console.log(row);
+                this.$http.get('/worker/getWorkerGroup').then(({body}) => {
+                    if (body.errorCode === 200) {
+                        body.data.forEach(element => {
+                            this.workerGroupOption.push(element);
+                        })
+                    }
+                }).finally(() => {
+                    this.loginLoading = false;
+                })
                 this.messageVisible = true;
                 this.operate = 'update';
                 let _form = Object.assign({}, row);
@@ -354,10 +350,23 @@
             },
             createJob(row) {
                 console.log(row);
+                this.$http.get('/worker/getWorkerGroup').then(({body}) => {
+                    if (body.errorCode === 200) {
+                        body.data.forEach(element => {
+                            this.workerGroupOption.push(element);
+                        })
+                    }
+                }).finally(() => {
+                    this.loginLoading = false;
+                })
                 this.messageVisible = true;
                 this.operate = 'create';
                 let _form = Object.assign({}, row);
                 this.messageForm = _form;
+            },
+            closeDialog() {
+                this.messageVisible = false;
+                this.workerGroupOption = [];
             },
             saveJob() {
                 console.log('save');
@@ -387,6 +396,56 @@
                         }
                     }
                 })
+            },
+
+            renderContent(h, data) {
+                return data.jobName;
+            },
+            onExpand(e, data) {
+                if ("expand" in data) {
+                    data.expand = !data.expand;
+                    if (!data.expand && data.children) {
+                        this.collapse(data.children);
+                    }
+                } else {
+                    this.$set(data, "expand", true);
+                }
+            },
+            //点击选项执行的方法，可以用于跳转到其他链接，注意一定要写协议头
+            onNodeClick(e, data) {
+                if(data.url==null){
+                    return false
+                }else{
+                    window.open(data.url)
+                }
+            },
+            collapse(list) {
+                let _this = this;
+                list.forEach(function(child) {
+                    if (child.expand) {
+                        child.expand = false;
+                    }
+                    child.children && _this.collapse(child.children);
+                });
+            },
+            expandChange() {
+                this.toggleExpand(this.data, this.expandAll);
+            },
+            toggleExpand(data, val) {
+                let _this = this;
+                if (Array.isArray(data)) {
+                    data.forEach(function(item) {
+                        _this.$set(item, "expand", val);
+                        if (item.children) {
+                            _this.toggleExpand(item.children, val);
+                        }
+                    });
+                } else {
+                    this.$set(data, "expand", val);
+                    if (data.children) {
+                        _this.toggleExpand(data.children, val);
+                    }
+                }
             }
 
         }

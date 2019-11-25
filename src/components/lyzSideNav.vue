@@ -51,6 +51,7 @@
     methods:{
       getLeftMenus(){
             let menuList = [
+              {'path':'/chart', 'name':'任务分布','icon':'el-icon-menu'},
               {'path':'/job', 'name':'任务管理','icon':'el-icon-menu'},
               {'path':'/jobInstance', 'name':'任务实例管理','icon':'el-icon-menu'},
               {'path':'/worker', 'name':'资源管理','icon':'el-icon-menu'}

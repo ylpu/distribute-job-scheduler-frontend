@@ -46,7 +46,7 @@
                         this.$http.post(url, {}).then(({body}) => {
                             if (body.success === true) {
                                 localStorage.username = body.data.userName;
-                                window.location.href = "/server";
+                                window.location.href = "/job";
                             } else {
                                 this.$message.error(body.message);
                             }

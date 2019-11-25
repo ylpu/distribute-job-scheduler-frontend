@@ -1,5 +1,5 @@
 import Vue from 'vue';
-class loginService{
+class LoginService{
   constructor(){
 
   }

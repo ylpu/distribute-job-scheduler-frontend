@@ -2,12 +2,15 @@ import Vue from 'vue';
 import {router} from './router';
 import store from './store';
 import App from './App';
+import Vue2OrgTree from 'vue2-org-tree';
+
 // 引入和使用elementUI
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueResource from 'vue-resource';
 import './config/http'
 Vue.use(ElementUI);
+Vue.use(Vue2OrgTree);
 
 // 路由判断登录 根据路由配置文件的参数
 // router.beforeEach((to, from, next) => {
