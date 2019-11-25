@@ -3,7 +3,7 @@
 # 安装
 * git clone https://github.com/ylpu/distribute-job-scheduler-frontend.git
 * 安装node
-从http://nodejs.cn/download/下载最新版本并安装
+从 http://nodejs.cn/download/ 下载最新版本并安装
 * 安装module
   * cnpm install -D less-loader less
   * cnpm install -D vue2-org-tree
