@@ -9,4 +9,4 @@
   * cnpm install -D vue2-org-tree
   * cnpm install echarts --save
 # 运行项目
-* npm run dev,并输入http://localhost:8088/
+* npm run dev,输入http://localhost:8088/
