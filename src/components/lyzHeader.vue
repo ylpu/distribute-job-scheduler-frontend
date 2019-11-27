@@ -33,15 +33,8 @@
     methods:{
       getCurrentUser() {
         this.$http.get('/user/current-user',{}).then(({body}) => {
-          console.log(body);
-          if (body.success === true) {
-            var unReadSize = body.data.unReadSize;
-            if(unReadSize > 0) {
-              this.$message.warning("有未读消息");
-              this.loginUserName = body.data.userName +"<span style='color:red'>("+unReadSize+"条未读消息)</span>";
-            } else {
-              this.loginUserName = body.data.userName;
-            }
+          if (body.errorCode === 200) {
+            this.loginUserName = body.data.userName;
           } else {
             window.location.href = '/login.html';
           }
@@ -53,13 +46,10 @@
       handleCommand(command){
         if(command === 'logout'){
           this.$http.get('/user/logout',{ }).then(({body}) => {
-            if (body.success === true) {
+            if (body.errorCode === 200) {
               window.location.href = "/login.html";
             }
           })
-        }
-        else if(command ==='detailMessage'){
-
         }
       },
     }

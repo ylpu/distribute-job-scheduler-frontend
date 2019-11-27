@@ -257,12 +257,6 @@
                         align: 'center',
                     },
                     {
-                        prop: 'creatorId',
-                        label: '任务创建人',
-                        'min-width': 120,
-                        align: 'center',
-                    },
-                    {
                         prop: 'workerGroupname',
                         label: '任务执行组',
                         'min-width': 120,

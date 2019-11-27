@@ -47,7 +47,7 @@
                         this.chartPie.setOption({
                             series: [
                                 {
-                                    name: '访问来源',
+                                    name: '任务分布',
                                     type: 'pie',
                                     radius: '55%',
                                     center: ['50%', '60%'],

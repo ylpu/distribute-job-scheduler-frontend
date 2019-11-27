@@ -17,7 +17,7 @@
                     <el-option label="FAIL" value="7">FAIL</el-option>
                 </el-select>
 
-                <el-input placeholder="任务指执行机器" v-model="worker" class="input-with-select" clearable>
+                <el-input placeholder="任务名称" v-model="jobName" class="input-with-select" clearable>
                     <el-button slot="append" icon="el-icon-search" @click="queryList"></el-button>
                 </el-input>
                 <el-button type="primary" size="small" @click="batchRerun" slot="reference">批量重跑</el-button> &nbsp;
@@ -87,7 +87,7 @@
         data() {
             return {
                 taskState: '',
-                worker: '',
+                jobName: '',
                 pagination: {
                     pageIndex: 1,
                     pageSize: 10,
@@ -104,13 +104,8 @@
                 loginLoading: false,
                 tableHeader: [
                     {
-                        prop: 'id',
-                        label: '实例ID',
-                        'min-width': 60,
-                        align: 'center',
-                    },                    {
-                        prop: 'jobId',
-                        label: '任务ID',
+                        prop: 'jobName',
+                        label: '任务名称',
                         'min-width': 60,
                         align: 'center',
                     },
@@ -155,7 +150,7 @@
             this.queryList();
         },
         mounted() {
-            this.$watch('worker', debounce(() => {
+            this.$watch('jobName', debounce(() => {
                 this.pagination.pageIndex = 1;
                 this.queryList();
             }, 1000));
@@ -171,7 +166,7 @@
                 this.loginLoading = true;
                 let params = {
                     taskState: this.taskState,
-                    worker: this.worker,
+                    jobName: this.jobName,
                     pageNo: this.pagination.pageIndex,
                     pageSize: this.pagination.pageSize
                 };

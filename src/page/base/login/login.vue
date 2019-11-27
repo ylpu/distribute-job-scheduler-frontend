@@ -44,11 +44,11 @@
                 this.$refs['loginForm'].validate((valid) => {
                     if (valid) {
                         this.$http.post(url, {}).then(({body}) => {
-                            if (body.success === true) {
+                            if (body.errorCode === 200) {
                                 localStorage.username = body.data.userName;
                                 window.location.href = "/job";
                             } else {
-                                this.$message.error(body.message);
+                                this.$message.error(body.errorMsg);
                             }
 
                         }).catch((err) => {
@@ -71,7 +71,7 @@
     .wrap {
         width: 100%;
         height: 100%;
-        background: url("../../../assets/img/bg2.jpeg") no-repeat;
+        background: url("../../../assets/img/bg.jpeg") no-repeat;
         background-size: 100% 100%;
 
         .loginBox {
