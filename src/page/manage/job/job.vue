@@ -326,6 +326,7 @@
         mixins: [manage],
         created() {
             this.queryList();
+
         },
         mounted() {
             this.$http.get('/worker/getWorkerGroup').then(({body}) => {
@@ -341,10 +342,10 @@
                 this.pagination.pageIndex = 1;
                 this.queryList();
             }, 1000));
-
         },
         methods: {
             drawLine(id) {
+
                 this.charts = echarts.init(document.getElementById('jobChart'))
                 this.$http.get('/jobInstance/getTaskLineByJobId/' + id).then(({body}) => {
                     if (body.errorCode === 200) {
@@ -399,7 +400,9 @@
 
             drawLines(id){
                 this.jobRunVisible = true;
-                this.drawLine(id);
+                this.$nextTick(() => {
+                    this.drawLine(id);
+                });
             },
 
             queryTypeChange(val) {
