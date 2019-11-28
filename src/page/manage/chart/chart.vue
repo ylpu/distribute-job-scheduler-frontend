@@ -75,9 +75,6 @@
         mounted: function () {
             this.drawCharts()
         },
-        // updated: function () {
-        //     this.drawCharts()
-        // }
     }
 </script>
 

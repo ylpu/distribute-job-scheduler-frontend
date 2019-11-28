@@ -13,6 +13,7 @@
                     <el-option label="shell" value="1">shell</el-option>
                     <el-option label="hive" value="2">hive</el-option>
                     <el-option label="spark" value="3">spark</el-option>
+                    <el-option label="command" value="4">command</el-option>
                 </el-select>
 
                 <el-input placeholder="任务名称" v-model="jobName" class="input-with-select" clearable>
@@ -49,11 +50,16 @@
                                 <el-button type="text" size="mini"
                                        @click="updateJob(scope.row)">修改
                                 </el-button>
-                                <el-button type="text" size="mini"
-                                           @click="jobTree(scope.row.id)">任务图
-                                </el-button>
+
                                 <el-button type="text" size="mini" class="danger-text"
                                            @click="downJob(scope.row.id)">下线
+                                </el-button>
+
+                                <el-button type="text" size="mini"
+                                           @click="jobTree(scope.row.id)">DAG
+                                </el-button>
+                                <el-button type="text" size="mini"
+                                           @click="drawLines(scope.row.id)">实例图
                                 </el-button>
                         </template>
                     </el-table-column>
@@ -90,6 +96,7 @@
                         <el-option label="SHELL" value="SHELL">SHELL</el-option>
                         <el-option label="HIVE" value="HIVE">HIVE</el-option>
                         <el-option label="SPARK" value="SPARK">SPARK</el-option>
+                        <el-option label="COMMAND" value="4">COMMAND</el-option>
                     </el-select>
                 </el-form-item>
 
@@ -150,18 +157,62 @@
         </el-dialog>
         <el-dialog :title="'任务图'" :visible.sync="jobTreeVisible" width="70%" center
                    class="user-dialog">
-            <div class="text-center" style="height: 400px">
-                <vue2-org-tree
-                        name="jobTree"
-                        :data="treeData"
-                        :horizontal="horizontal"
-                        :collapsable="collapsable"
-                        :label-class-name="labelClassName"
-                        :render-content="renderContent"
-                        @on-expand="onExpand"
-                        @on-node-click="onNodeClick"
-                />
+            <div id="tree">
+                <div class="container">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="page-header">
+                            <h3>任务依赖图</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <form class="form-horizontal row">
+                                    <div class="col-md-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" v-model="horizontal" /> 横排
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" v-model="collapsable" /> 竖排
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" v-model="expandAll" @change="expandChange" /> 显示所有项
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <p>
+                            <br />
+                        </p>
+                        <div class="text-center">
+                            <vue2-org-tree
+                                    name="jobTree"
+                                    :data="treeData"
+                                    :horizontal="horizontal"
+                                    :collapsable="collapsable"
+                                    :label-class-name="labelClassName"
+                                    :render-content="renderContent"
+                                    @on-expand="onExpand"
+                                    @on-node-click="onNodeClick"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
+
+        </el-dialog>
+        <el-dialog :title="'任务实例运行情况'" :visible.sync="jobRunVisible" width="75%" center
+                   class="job-dialog">
+            <div id="jobChart" style="width: 1200px;height: 500px;"></div>
         </el-dialog>
     </div>
 </template>
@@ -170,7 +221,7 @@
     import lyzLayout from '@/components/lyzLayout';
     import manage from '../manage.component';
     import {formatDateTime, responseText, debounce} from '../../../config/utils.js';
-
+    import echarts from 'echarts';
     export default {
         name: "server",
         data() {
@@ -185,8 +236,12 @@
                 label: '任务管理',
                 messageForm: {},
                 treeData: {},
+                charts: '',
+                xdata:[],
+                ydata:[],
                 messageVisible: false,
                 jobTreeVisible: false,
+                jobRunVisible: false,
                 messageLabelWidth: '120px',
                 horizontal: true,
                 collapsable: true,
@@ -273,12 +328,80 @@
             this.queryList();
         },
         mounted() {
+            this.$http.get('/worker/getWorkerGroup').then(({body}) => {
+                if (body.errorCode === 200) {
+                    body.data.forEach(element => {
+                        this.workerGroupOption.push(element);
+                    })
+                }
+            }).finally(() => {
+                this.loginLoading = false;
+            });
             this.$watch('jobName', debounce(() => {
                 this.pagination.pageIndex = 1;
                 this.queryList();
             }, 1000));
+
         },
         methods: {
+            drawLine(id) {
+                this.charts = echarts.init(document.getElementById('jobChart'))
+                this.$http.get('/jobInstance/getTaskLineByJobId/' + id).then(({body}) => {
+                    if (body.errorCode === 200) {
+                        this.xdata = [];
+                        this.ydata = [];
+                        body.data.forEach(item => {
+                            this.xdata.push(item.scheduleTime);
+                            this.ydata.push(item.elapseTime);
+                        })
+                        this.charts.setOption({
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data: ['任务运行时间']
+                            },
+                            grid: {
+                                left: '10%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                data: this.xdata
+
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+
+                            series: [{
+                                name: '任务运行时间',
+                                type: 'line',
+                                stack: '运行时间',
+                                data: this.ydata
+                            }]
+                        });
+
+                    }
+                }).finally(() => {
+                    this.loginLoading = false;
+                })
+            },
+
+            drawLines(id){
+                this.jobRunVisible = true;
+                this.drawLine(id);
+            },
+
             queryTypeChange(val) {
                 if (val !== '') {
                     this.jobType = val;
@@ -328,15 +451,6 @@
             },
             updateJob(row) {
                 console.log(row);
-                this.$http.get('/worker/getWorkerGroup').then(({body}) => {
-                    if (body.errorCode === 200) {
-                        body.data.forEach(element => {
-                            this.workerGroupOption.push(element);
-                        })
-                    }
-                }).finally(() => {
-                    this.loginLoading = false;
-                })
                 this.messageVisible = true;
                 this.operate = 'update';
                 let _form = Object.assign({}, row);
@@ -344,15 +458,6 @@
             },
             createJob(row) {
                 console.log(row);
-                this.$http.get('/worker/getWorkerGroup').then(({body}) => {
-                    if (body.errorCode === 200) {
-                        body.data.forEach(element => {
-                            this.workerGroupOption.push(element);
-                        })
-                    }
-                }).finally(() => {
-                    this.loginLoading = false;
-                })
                 this.messageVisible = true;
                 this.operate = 'create';
                 let _form = Object.assign({}, row);
@@ -360,7 +465,6 @@
             },
             closeDialog() {
                 this.messageVisible = false;
-                this.workerGroupOption = [];
             },
             saveJob() {
                 console.log('save');
@@ -423,7 +527,7 @@
                 });
             },
             expandChange() {
-                this.toggleExpand(this.data, this.expandAll);
+                this.toggleExpand(this.treeData, this.expandAll);
             },
             toggleExpand(data, val) {
                 let _this = this;
@@ -454,4 +558,5 @@
     .danger-text {
         color: #F56C6C;
     }
+
 </style>

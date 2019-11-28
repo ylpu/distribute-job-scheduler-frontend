@@ -45,7 +45,7 @@
                     <el-table-column
                             fixed="right"
                             label="操作"
-                            min-width="150">
+                            min-width="220">
                         <template slot-scope="scope">
 
                             <el-button type="text" size="mini"
@@ -56,6 +56,12 @@
                             </el-button>
                             <el-button type="text" size="mini"
                                        @click="rerunAll(scope.row.id)">重跑所有
+                            </el-button>
+                            <el-button type="text" size="mini"
+                                       @click="markSuccess(scope.row.id)">标识成功
+                            </el-button>
+                            <el-button type="text" size="mini"
+                                       @click="markFail(scope.row.id)">标识失败
                             </el-button>
                             <el-button type="text" size="mini"
                                        @click="viewLog(scope.row.logUrl)">日志
@@ -209,6 +215,18 @@
                     id: id,
                 };
                 this.save('/jobInstance/kill', params);
+            },
+            markSuccess(id) {
+                let params = {
+                    id: id,
+                };
+                this.save('/jobInstance/markSuccess', params);
+            },
+            markFail(id) {
+                let params = {
+                    id: id,
+                };
+                this.save('/jobInstance/markFail', params);
             },
             viewLog(url) {
                 this.logVisible = true;
