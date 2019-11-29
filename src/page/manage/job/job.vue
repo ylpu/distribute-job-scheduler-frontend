@@ -41,7 +41,7 @@
                     <el-table-column
                             fixed="right"
                             label="操作"
-                            min-width="120">
+                            min-width="240">
 
                             <template slot-scope="scope">
                                 <el-button type="text" size="mini"
@@ -50,7 +50,9 @@
                                 <el-button type="text" size="mini"
                                        @click="updateJob(scope.row)">修改
                                 </el-button>
-
+                                <el-button type="text" size="mini"
+                                           @click="rescheduleJob(scope.row.id)">重新调度
+                                </el-button>
                                 <el-button type="text" size="mini" class="danger-text"
                                            @click="downJob(scope.row.id)">下线
                                 </el-button>
@@ -96,7 +98,7 @@
                         <el-option label="SHELL" value="SHELL">SHELL</el-option>
                         <el-option label="HIVE" value="HIVE">HIVE</el-option>
                         <el-option label="SPARK" value="SPARK">SPARK</el-option>
-                        <el-option label="COMMAND" value="4">COMMAND</el-option>
+                        <el-option label="COMMAND" value="COMMAND">COMMAND</el-option>
                     </el-select>
                 </el-form-item>
 
@@ -284,12 +286,18 @@
                     {
                         prop: 'id',
                         label: '任务ID',
-                        'min-width': 40,
+                        'min-width': 60,
                         align: 'center',
                     },
                     {
                         prop: 'jobName',
                         label: '任务名',
+                        'min-width': 80,
+                        align: 'center',
+                    },
+                    {
+                        prop: 'ownerIds',
+                        label: '任务拥有人',
                         'min-width': 80,
                         align: 'center',
                     },
@@ -302,6 +310,18 @@
                     {
                         prop: 'scheduleCron',
                         label: '任务时间',
+                        'min-width': 100,
+                        align: 'center',
+                    },
+                    {
+                        prop: 'executionTimeout',
+                        label: '超时时间',
+                        'min-width': 100,
+                        align: 'center',
+                    },
+                    {
+                        prop: 'jobReleasestate',
+                        label: '任务状态',
                         'min-width': 100,
                         align: 'center',
                     },
@@ -435,6 +455,12 @@
                     id: id,
                 };
                 this.save('/job/scheduleJob', params);
+            },
+            rescheduleJob(id) {
+                let params = {
+                    id: id,
+                };
+                this.save('/job/rescheduleJob', params);
             },
             downJob(id) {
                 let params = {
