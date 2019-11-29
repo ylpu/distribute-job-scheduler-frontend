@@ -229,13 +229,13 @@
                 this.save('/jobInstance/markFail', params);
             },
             viewLog(url) {
-                this.logVisible = true;
                 let params = {
                     logPath: url
                 };
                 this.$http.get('/jobInstance/viewLog', {params: params}).then(({body}) => {
                     if (body.errorCode === 200) {
                         this.logForm.logContent = body.data;
+                        this.logVisible = true;
                     } else {
                         this.$message.error(body.errorMsg);
                     }
