@@ -320,12 +320,6 @@
                         align: 'center',
                     },
                     {
-                        prop: 'jobReleasestate',
-                        label: '任务状态',
-                        'min-width': 100,
-                        align: 'center',
-                    },
-                    {
                         prop: 'alertUsers',
                         label: '任务告警人',
                         'min-width': 120,
