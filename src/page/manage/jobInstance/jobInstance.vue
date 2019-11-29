@@ -74,11 +74,7 @@
         </lyz-layout>
         <el-dialog :title="'日志详情'" :visible.sync="logVisible" width="70%" center
                    class="user-dialog">
-            <el-form :model="logForm" :label-width="messageLabelWidth" ref="logForm" >
-                <el-form-item label=""  prop="logContent">
-                    <el-input type="textarea"  readonly="true" :autosize="{minRows:20}" v-model="logForm.logContent" clearable placeholder="任务日志详情"></el-input>
-                </el-form-item>
-            </el-form>
+            <div id="content" v-html="content" style="width: 1200px"></div>
         </el-dialog>
     </div>
 </template>
@@ -101,7 +97,7 @@
                 },
                 label: '任务实例管理',
                 messageForm: {},
-                logForm: {},
+                content: '',
                 messageVisible: false,
                 logVisible:false,
                 messageLabelWidth: '90px',
@@ -234,7 +230,7 @@
                 };
                 this.$http.get('/jobInstance/viewLog', {params: params}).then(({body}) => {
                     if (body.errorCode === 200) {
-                        this.logForm.logContent = body.data;
+                        this.content = body.data.replace(/\n/g,"<br/>");
                         this.logVisible = true;
                     } else {
                         this.$message.error(body.errorMsg);
