@@ -73,8 +73,8 @@
 
         </lyz-layout>
         <el-dialog :title="'日志详情'" :visible.sync="logVisible" width="70%" center
-                   class="user-dialog">
-            <div id="content" v-html="content" style="width: 1200px"></div>
+                   class="user-dialog" @close='closeLogDialog'>
+            <div ref = "content" id="content" v-html="content" style="width: 1200px"></div>
         </el-dialog>
     </div>
 </template>
@@ -196,14 +196,12 @@
                     ids: ids
                 };
                 this.$http.post("/jobInstance/batchRerun", {}, {params: params}).then(({body}) => {
-                    if (body.success === true) {
+                    if (body.errorCode === 200) {
                         this.queryList();
                         this.$message.success(body.errorMsg);
                     } else {
                         this.$message.error(body.errorMsg);
                     }
-                }).catch(() => {
-                    this.$message.error('批量重跑失败');
                 })
             },
             kill(id) {
@@ -250,6 +248,10 @@
                     id: id,
                 };
                 this.save('/jobInstance/rerunAll', params);
+            },
+            closeLogDialog(){
+                this.content='';
+                this.logVisible = false;
             }
         }
     }

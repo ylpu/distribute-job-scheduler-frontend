@@ -158,7 +158,7 @@
             </div>
         </el-dialog>
         <el-dialog :title="'任务图'" :visible.sync="jobTreeVisible" width="70%" center
-                   class="user-dialog">
+                   class="user-dialog" @close='closeDag'>
             <div id="tree">
                 <div class="container">
                     <div class="col-md-10 col-md-offset-1">
@@ -167,7 +167,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
-                                <form class="form-horizontal row">
+                                <form class="form-horizontal row" ref="dagForm">
                                     <div class="col-md-4">
                                         <div class="checkbox">
                                             <label>
@@ -213,7 +213,7 @@
 
         </el-dialog>
         <el-dialog :title="'任务实例运行情况'" :visible.sync="jobRunVisible" width="75%" center
-                   class="job-dialog">
+                   class="job-dialog" @close='closeJobDialog'>
             <div id="jobChart" style="width: 1200px;height: 500px;"></div>
         </el-dialog>
     </div>
@@ -567,8 +567,19 @@
                         _this.toggleExpand(data.children, val);
                     }
                 }
+            },
+            closeJobDialog(){
+                this.xdata = [];
+                this.ydata = [];
+                this.jobRunVisible = false;
+            },
+            closeDag(){
+                this.treeData = {};
+                this.horizontal = true;
+                this.collapsable = true;
+                this.expandAll = false;
+                this.jobTreeVisible = false;
             }
-
         }
     }
 </script>
