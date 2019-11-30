@@ -460,11 +460,30 @@
                 let params = {
                     id: id,
                 };
-                this.save('/job/downJob', params);
+                this.$confirm('确定要下线任务？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                }).then(() => {
+                    this.$http.post('/job/downJob', params).then(({body}) => {
+                        if (body.errorCode === 200) {
+                            this.queryList();
+                        } else {
+                            this.$message.error(body.errorMsg);
+                        }
+                    }).catch(() => {
+                        this.$message.error('删除失败');
+                    })
+                }).catch(() => {
+                    this.$message.info('已取消下线')
+                })
             },
             jobTree(id) {
                 this.jobTreeVisible = true;
-                this.$http.get('/job/queryTreeById/' + id).then(({body}) => {
+                let params = {
+                    id: id,
+                };
+                this.$http.get('/job/queryTreeById?id='+id).then(({body}) => {
                     if (body.errorCode === 200) {
                         this.treeData = body.data;
                     }
