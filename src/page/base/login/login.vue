@@ -3,15 +3,32 @@
         <div class="loginBox">
             <el-form ref="loginForm" :model="loginForm" class="login-form" :rules="rules" label-width="80px"
                      label-position="left">
-                <el-form-item label="用户名" prop="name">
-                    <el-input v-model="loginForm.name"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="password">
-                    <el-input v-model="loginForm.password" type="password"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" plain @click="handleLogin">登录</el-button>
-                </el-form-item>
+                <el-row gutter="80" justify="start">
+                    <el-col span="24">thales登陆
+                    </el-col>
+                </el-row>
+                <br>
+                <el-row gutter="80" justify="start">
+                    <el-col span="24">
+                         <el-form-item label="用户名" prop="name">
+                              <el-input v-model="loginForm.name"></el-input>
+                         </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row gutter="80" justify="start">
+                    <el-col span="24">
+                          <el-form-item label="密码" prop="password">
+                                <el-input v-model="loginForm.password" type="password"></el-input>
+                          </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row gutter="80" justify="start">
+                    <el-col span="24">
+                          <el-form-item>
+                               <el-button type="primary" plain @click="handleLogin">登录</el-button>
+                         </el-form-item>
+                    </el-col>
+                </el-row>
             </el-form>
         </div>
     </div>

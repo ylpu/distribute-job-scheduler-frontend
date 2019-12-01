@@ -69,12 +69,12 @@
             </div>
 
         </lyz-layout>
-        <el-dialog :title="operate==='update'?'修改任务':'添加任务'" :visible.sync="messageVisible" width="60%" center
+        <el-dialog :title="operate==='update'?'修改任务':'添加任务'" :visible.sync="messageVisible" width="65%" center
                    class="user-dialog" @close='closeFormDialog'>
 
             <el-form :model="messageForm" :label-width="messageLabelWidth" ref="messageForm" :rules="messageRule"
                      :validate-on-rule-change=false>
-               <el-row gutter="20" justify="start">
+               <el-row gutter="80" justify="start">
                    <el-col span="12">
                         <el-form-item label="任务名称"  prop="jobName">
                              <el-input v-model="messageForm.jobName" placeholder="请输入任务名称"></el-input>
@@ -93,7 +93,7 @@
                        </el-form-item>
                    </el-col>
                </el-row>
-                <el-row gutter="20" justify="start">
+                <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="任务依赖"  prop="dependIds">
                               <el-input v-model="messageForm.dependIds" placeholder="请输入任务依赖，任务id以逗号隔开(空表示无依赖)"></el-input>
@@ -109,7 +109,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row gutter="20" justify="start">
+                <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="任务责任人"  prop="ownerIds">
                             <el-input v-model="messageForm.ownerIds" placeholder="请输入任务责任人"></el-input>
@@ -126,7 +126,7 @@
                           </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row gutter="20" justify="start">
+                <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="任务告警人"  prop="alertUsers">
                             <el-input v-model="messageForm.alertUsers" placeholder="请输入任务告警人"></el-input>
@@ -142,7 +142,7 @@
                          </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row gutter="20" justify="start">
+                <el-row gutter="80" justify="start">
                     <el-col span="12">
                          <el-form-item label="调度时间"  prop="scheduleCron">
                              <el-input v-model="messageForm.scheduleCron" placeholder="调度时间,cron表达式"></el-input>
@@ -161,27 +161,27 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row gutter="20" justify="start">
+                <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="重试次数"  prop="maxRetrytimes">
                             <el-input v-model="messageForm.maxRetrytimes" placeholder="重试次数"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col span="7">
+                    <el-col span="8">
                         <el-form-item label="超时时间"  prop="executionTimeout">
                             <el-input v-model="messageForm.executionTimeout" placeholder="超时时间"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row gutter="20" justify="start">
-                    <el-col span="24">
+                <el-row gutter="80" justify="start">
+                    <el-col span="21">
                         <el-form-item label="任务描述"  prop="description">
                             <el-input v-model="messageForm.description" placeholder="请输入任务描述"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row gutter="20" justify="start" >
-                    <el-col span="24">
+                <el-row gutter="80" justify="start" >
+                    <el-col span="21">
                         <el-form-item label="任务配置"  prop="jobConfiguration">
                             <el-input type="textarea"  :autosize="{minRows:5}" v-model="messageForm.jobConfiguration" clearable placeholder="请输入任务配置"></el-input>
                         </el-form-item>
