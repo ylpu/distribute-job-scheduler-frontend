@@ -69,88 +69,124 @@
             </div>
 
         </lyz-layout>
-        <el-dialog :title="operate==='update'?'修改任务':'添加任务'" :visible.sync="messageVisible" width="70%" center
-                   class="user-dialog" @close='closeDialog'>
+        <el-dialog :title="operate==='update'?'修改任务':'添加任务'" :visible.sync="messageVisible" width="60%" center
+                   class="user-dialog" @close='closeFormDialog'>
 
             <el-form :model="messageForm" :label-width="messageLabelWidth" ref="messageForm" :rules="messageRule"
                      :validate-on-rule-change=false>
-
-                <el-form-item label="任务名称"  prop="jobName">
-                    <el-input v-model="messageForm.jobName" placeholder="请输入任务名称"></el-input>
-                </el-form-item>
-                <el-form-item label="任务描述"  prop="description">
-                    <el-input v-model="messageForm.description" placeholder="请输入任务描述"></el-input>
-                </el-form-item>
-                <el-form-item label="任务依赖"  prop="dependIds">
-                    <el-input v-model="messageForm.dependIds" placeholder="请输入任务依赖，任务id以逗号隔开(空表示无依赖)"></el-input>
-                </el-form-item>
-
-                    <el-form-item label="任务优先级"  prop="jobPriority">
-                        <el-select v-model="messageForm.jobPriority" placeholder="请选择任务优先级">
-                            <el-option label="LOW" value="LOW">LOW</el-option>
-                            <el-option label="MEDIUM" value="MEDIUM">MEDIUM</el-option>
-                        <el-option label="HIGH" value="HIGH">HIGH</el-option>
-                        </el-select>
-                    </el-form-item>
-
-                <el-form-item label="任务类型"  prop="jobType">
-                    <el-select v-model="messageForm.jobType" placeholder="请选择任务类型">
-                        <el-option label="SHELL" value="SHELL">SHELL</el-option>
-                        <el-option label="HIVE" value="HIVE">HIVE</el-option>
-                        <el-option label="SPARK" value="SPARK">SPARK</el-option>
-                        <el-option label="COMMAND" value="COMMAND">COMMAND</el-option>
-                    </el-select>
-                </el-form-item>
-
-                    <el-form-item label="任务责任人"  prop="ownerIds">
-                        <el-input v-model="messageForm.ownerIds" placeholder="请输入任务责任人"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="任务告警人"  prop="alertUsers">
-                        <el-input v-model="messageForm.alertUsers" placeholder="请输入任务告警人"></el-input>
-                    </el-form-item>
-                <el-form-item label="告警类型"  prop="alertTypes">
-                    <el-select v-model="messageForm.alertTypes" placeholder="请选择告警类型">
-                        <el-option label="SMS" value="1">SMS</el-option>
-                        <el-option label="WEBCHAT" value="WEBCHAT">WEBCHAT</el-option>
-                        <el-option label="EMAIL" value="EMAIL">EMAIL</el-option>
-                    </el-select>
-                </el-form-item>
-                    <el-form-item label="调度时间"  prop="scheduleCron">
-                        <el-input v-model="messageForm.scheduleCron" placeholder="调度时间,cron表达式"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="任务周期"  prop="jobCycle">
-                        <el-select v-model="messageForm.jobCycle" placeholder="请选择任务周期">
-                            <el-option label="MINUTE" value="MINUTE">MINUTE</el-option>
-                            <el-option label="HOUR" value="HOUR">HOUR</el-option>
-                            <el-option label="DAY" value="DAY">DAY</el-option>
-                            <el-option label="WEEK" value="WEEK">WEEK</el-option>
-                            <el-option label="MONTH" value="MONTH">MONTH</el-option>
-                            <el-option label="YEAR" value="YEAR">YEAR</el-option>
-                        </el-select>
-                    </el-form-item>
-
-                    <el-form-item label="重试次数"  prop="maxRetrytimes">
-                        <el-input v-model="messageForm.maxRetrytimes" placeholder="重试次数"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="超时时间"  prop="executionTimeout">
-                        <el-input v-model="messageForm.executionTimeout" placeholder="超时时间"></el-input>
-                    </el-form-item>
-                    <el-form-item label="任务工作组"  prop="workerGroupname">
-                        <el-select v-model="messageForm.workerGroupname" placeholder="任务工作组" class="right-select">
-                            <el-option
-                                    v-for="item in workerGroupOption"
-                                    :key="item"
-                                    :label="item"
-                                    :value="item">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="任务配置"  prop="jobConfiguration">
-                        <el-input type="textarea"  :autosize="{minRows:5}" v-model="messageForm.jobConfiguration" clearable placeholder="请输入任务配置"></el-input>
-                    </el-form-item>
+               <el-row gutter="20" justify="start">
+                   <el-col span="12">
+                        <el-form-item label="任务名称"  prop="jobName">
+                             <el-input v-model="messageForm.jobName" placeholder="请输入任务名称"></el-input>
+                        </el-form-item>
+                   </el-col>
+                   <el-col span="12">
+                       <el-form-item label="任务工作组"  prop="workerGroupname">
+                           <el-select v-model="messageForm.workerGroupname" placeholder="任务工作组" class="right-select">
+                               <el-option
+                                       v-for="item in workerGroupOption"
+                                       :key="item"
+                                       :label="item"
+                                       :value="item">
+                               </el-option>
+                           </el-select>
+                       </el-form-item>
+                   </el-col>
+               </el-row>
+                <el-row gutter="20" justify="start">
+                    <el-col span="12">
+                        <el-form-item label="任务依赖"  prop="dependIds">
+                              <el-input v-model="messageForm.dependIds" placeholder="请输入任务依赖，任务id以逗号隔开(空表示无依赖)"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col span="12">
+                         <el-form-item label="任务优先级"  prop="jobPriority">
+                            <el-select v-model="messageForm.jobPriority" placeholder="请选择任务优先级">
+                                <el-option label="LOW" value="LOW">LOW</el-option>
+                                <el-option label="MEDIUM" value="MEDIUM">MEDIUM</el-option>
+                                <el-option label="HIGH" value="HIGH">HIGH</el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row gutter="20" justify="start">
+                    <el-col span="12">
+                        <el-form-item label="任务责任人"  prop="ownerIds">
+                            <el-input v-model="messageForm.ownerIds" placeholder="请输入任务责任人"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col span="12">
+                         <el-form-item label="任务类型"  prop="jobType">
+                              <el-select v-model="messageForm.jobType" placeholder="请选择任务类型">
+                                   <el-option label="SHELL" value="SHELL">SHELL</el-option>
+                                   <el-option label="HIVE" value="HIVE">HIVE</el-option>
+                                   <el-option label="SPARK" value="SPARK">SPARK</el-option>
+                                   <el-option label="COMMAND" value="COMMAND">COMMAND</el-option>
+                              </el-select>
+                          </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row gutter="20" justify="start">
+                    <el-col span="12">
+                        <el-form-item label="任务告警人"  prop="alertUsers">
+                            <el-input v-model="messageForm.alertUsers" placeholder="请输入任务告警人"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col span="12">
+                         <el-form-item label="告警类型"  prop="alertTypes">
+                              <el-select v-model="messageForm.alertTypes" placeholder="请选择告警类型">
+                                  <el-option label="SMS" value="1">SMS</el-option>
+                                  <el-option label="WEBCHAT" value="WEBCHAT">WEBCHAT</el-option>
+                                 <el-option label="EMAIL" value="EMAIL">EMAIL</el-option>
+                             </el-select>
+                         </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row gutter="20" justify="start">
+                    <el-col span="12">
+                         <el-form-item label="调度时间"  prop="scheduleCron">
+                             <el-input v-model="messageForm.scheduleCron" placeholder="调度时间,cron表达式"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col span="12">
+                         <el-form-item label="任务周期"  prop="jobCycle">
+                            <el-select v-model="messageForm.jobCycle" placeholder="请选择任务周期">
+                                <el-option label="MINUTE" value="MINUTE">MINUTE</el-option>
+                                <el-option label="HOUR" value="HOUR">HOUR</el-option>
+                                <el-option label="DAY" value="DAY">DAY</el-option>
+                                <el-option label="WEEK" value="WEEK">WEEK</el-option>
+                                <el-option label="MONTH" value="MONTH">MONTH</el-option>
+                                <el-option label="YEAR" value="YEAR">YEAR</el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row gutter="20" justify="start">
+                    <el-col span="12">
+                        <el-form-item label="重试次数"  prop="maxRetrytimes">
+                            <el-input v-model="messageForm.maxRetrytimes" placeholder="重试次数"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col span="7">
+                        <el-form-item label="超时时间"  prop="executionTimeout">
+                            <el-input v-model="messageForm.executionTimeout" placeholder="超时时间"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row gutter="20" justify="start">
+                    <el-col span="24">
+                        <el-form-item label="任务描述"  prop="description">
+                            <el-input v-model="messageForm.description" placeholder="请输入任务描述"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row gutter="20" justify="start" >
+                    <el-col span="24">
+                        <el-form-item label="任务配置"  prop="jobConfiguration">
+                            <el-input type="textarea"  :autosize="{minRows:5}" v-model="messageForm.jobConfiguration" clearable placeholder="请输入任务配置"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click=closeDialog>取 消</el-button>
@@ -374,7 +410,7 @@
                                 trigger: 'axis'
                             },
                             legend: {
-                                data: ['任务运行时间']
+                                data: ['近30次运行时间']
                             },
                             grid: {
                                 left: '10%',
@@ -399,7 +435,7 @@
                             },
 
                             series: [{
-                                name: '任务运行时间',
+                                name: '近30次运行时间',
                                 type: 'line',
                                 stack: '运行时间',
                                 data: this.ydata
@@ -505,8 +541,9 @@
                 let _form = Object.assign({}, row);
                 this.messageForm = _form;
             },
-            closeDialog() {
+            closeFormDialog() {
                 this.messageVisible = false;
+                this.$refs['messageForm'].resetFields();
             },
             saveJob() {
                 console.log('save');
