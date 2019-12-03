@@ -95,8 +95,15 @@
                </el-row>
                 <el-row gutter="80" justify="start">
                     <el-col span="12">
-                        <el-form-item label="任务依赖"  prop="dependIds">
-                              <el-input v-model="messageForm.dependIds" placeholder="请输入任务依赖，任务id以逗号隔开(空表示无依赖)"></el-input>
+                        <el-form-item label="任务依赖id"  prop="dependIds">
+                            <el-select v-model="messageForm.dependIds" placeholder="任务依赖id" class="right-select" multiple>
+                                <el-option
+                                    v-for="item in jobIdOption"
+                                    :key="item"
+                                    :label="item"
+                                    :value="item">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col span="12">
@@ -122,6 +129,7 @@
                                    <el-option label="HIVE" value="HIVE">HIVE</el-option>
                                    <el-option label="SPARK" value="SPARK">SPARK</el-option>
                                    <el-option label="COMMAND" value="COMMAND">COMMAND</el-option>
+                                   <el-option label="HTTP" value="HTTP">HTTP</el-option>
                               </el-select>
                           </el-form-item>
                     </el-col>
@@ -317,6 +325,7 @@
                 operate: '',
                 tableData: [],
                 workerGroupOption :[],
+                jobIdOption:[],
                 loginLoading: false,
                 tableHeader: [
                     {
@@ -388,6 +397,17 @@
             }).finally(() => {
                 this.loginLoading = false;
             });
+
+            this.$http.get('/job/getAllJobIds').then(({body}) => {
+                if (body.errorCode === 200) {
+                    body.data.forEach(element => {
+                        this.jobIdOption.push(element);
+                    })
+                }
+            }).finally(() => {
+                this.loginLoading = false;
+            });
+
             this.$watch('jobName', debounce(() => {
                 this.pagination.pageIndex = 1;
                 this.queryList();
@@ -545,6 +565,7 @@
                 this.messageVisible = false;
                 this.$refs['messageForm'].resetFields();
             },
+
             saveJob() {
                 console.log('save');
                 let params = {
