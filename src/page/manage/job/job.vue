@@ -58,7 +58,7 @@
                                 </el-button>
 
                                 <el-button type="text" size="mini"
-                                           @click="jobTree(scope.row.id)">DAG
+                                           @click="jobTree(scope.row.id)">依赖图
                                 </el-button>
                                 <el-button type="text" size="mini"
                                            @click="drawLines(scope.row.id)">实例图
@@ -95,13 +95,13 @@
                </el-row>
                 <el-row gutter="80" justify="start">
                     <el-col span="12">
-                        <el-form-item label="任务依赖id"  prop="dependIds">
-                            <el-select v-model="messageForm.dependIds" placeholder="任务依赖id" class="right-select" multiple>
+                        <el-form-item label="任务依赖"  prop="dependIds">
+                            <el-select v-model="messageForm.dependIds" placeholder="任务依赖" class="right-select" multiple>
                                 <el-option
                                     v-for="item in jobIdOption"
-                                    :key="item"
-                                    :label="item"
-                                    :value="item">
+                                    :key="item.id"
+                                    :label="item.jobName"
+                                    :value="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -329,12 +329,6 @@
                 loginLoading: false,
                 tableHeader: [
                     {
-                        prop: 'id',
-                        label: '任务ID',
-                        'min-width': 60,
-                        align: 'center',
-                    },
-                    {
                         prop: 'jobName',
                         label: '任务名',
                         'min-width': 80,
@@ -398,7 +392,7 @@
                 this.loginLoading = false;
             });
 
-            this.$http.get('/job/getAllJobIds').then(({body}) => {
+            this.$http.get('/job/getAllJobs').then(({body}) => {
                 if (body.errorCode === 200) {
                     body.data.forEach(element => {
                         this.jobIdOption.push(element);
