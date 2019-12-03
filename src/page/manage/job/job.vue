@@ -14,6 +14,7 @@
                     <el-option label="hive" value="2">hive</el-option>
                     <el-option label="spark" value="3">spark</el-option>
                     <el-option label="command" value="4">command</el-option>
+                    <el-option label="http" value="5">http</el-option>
                 </el-select>
 
                 <el-input placeholder="任务名称" v-model="jobName" class="input-with-select" clearable>
@@ -96,7 +97,7 @@
                 <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="任务依赖"  prop="dependIds">
-                            <el-select v-model="messageForm.dependIds" placeholder="任务依赖" class="right-select" multiple>
+                            <el-select v-model="messageForm.dependIds" placeholder="任务依赖" class="right-select" multiple style="width:360px">
                                 <el-option
                                     v-for="item in jobIdOption"
                                     :key="item.id"
