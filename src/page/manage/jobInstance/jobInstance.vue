@@ -48,7 +48,7 @@
                             min-width="220">
                         <template slot-scope="scope">
 
-                            <el-button type="text" size="mini"
+                            <el-button type="text" size="mini" :disabled="isDisabled(scope.row.jobType)"
                                        @click="kill(scope.row.id)">杀任务
                             </el-button>
                             <el-button type="text" size="mini"
@@ -252,6 +252,13 @@
             closeLogDialog(){
                 this.content='';
                 this.logVisible = false;
+            },
+            isDisabled(jobType) {
+                if (jobType == 'HTTP'){
+                    return true;
+                }else{
+                    return false;
+                }
             }
         }
     }
