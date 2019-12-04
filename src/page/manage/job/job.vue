@@ -540,6 +540,8 @@
             },
             closeFormDialog() {
                 this.messageVisible = false;
+                this.workerGroupOption = [];
+                this.jobIdOption = [];
                 this.$refs['messageForm'].resetFields();
             },
             initDialog(){

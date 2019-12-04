@@ -48,19 +48,19 @@
                             min-width="220">
                         <template slot-scope="scope">
 
-                            <el-button type="text" size="mini" :disabled="isKillDisabled(scope.row.jobType)"
+                            <el-button type="text" size="mini" :disabled="isKillDisabled(scope.row.jobType,scope.row.taskState)"
                                        @click="kill(scope.row.id)">杀任务
                             </el-button>
-                            <el-button type="text" size="mini"
+                            <el-button type="text" size="mini" :disabled="isActionDisabled(scope.row.jobReleasestate)"
                                        @click="rerun(scope.row.id)">重跑
                             </el-button>
-                            <el-button type="text" size="mini"
+                            <el-button type="text" size="mini" :disabled="isActionDisabled(scope.row.jobReleasestate)"
                                        @click="rerunAll(scope.row.id)">重跑所有
                             </el-button>
-                            <el-button type="text" size="mini"
+                            <el-button type="text" size="mini" :disabled="isActionDisabled(scope.row.jobReleasestate)"
                                        @click="markSuccess(scope.row.id)">标识成功
                             </el-button>
-                            <el-button type="text" size="mini"
+                            <el-button type="text" size="mini" :disabled="isActionDisabled(scope.row.jobReleasestate)"
                                        @click="markFail(scope.row.id)">标识失败
                             </el-button>
                             <el-button type="text" size="mini" :disabled="isLogDisabled(scope.row.logUrl)"
@@ -253,8 +253,8 @@
                 this.content='';
                 this.logVisible = false;
             },
-            isKillDisabled(jobType) {
-                if (jobType == 'HTTP'){
+            isKillDisabled(jobType,taskState) {
+                if (jobType == 'HTTP' || taskState !='RUNNING'){
                     return true;
                 }else{
                     return false;
@@ -262,6 +262,13 @@
             },
             isLogDisabled(logUrl) {
                 if (logUrl == '' || logUrl == null){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            isActionDisabled(jobReleaseState){
+                if (jobReleaseState == 'OFFLINE'){
                     return true;
                 }else{
                     return false;
