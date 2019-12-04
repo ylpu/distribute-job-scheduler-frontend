@@ -383,26 +383,6 @@
 
         },
         mounted() {
-            this.$http.get('/worker/getWorkerGroup').then(({body}) => {
-                if (body.errorCode === 200) {
-                    body.data.forEach(element => {
-                        this.workerGroupOption.push(element);
-                    })
-                }
-            }).finally(() => {
-                this.loginLoading = false;
-            });
-
-            this.$http.get('/job/getAllJobs').then(({body}) => {
-                if (body.errorCode === 200) {
-                    body.data.forEach(element => {
-                        this.jobIdOption.push(element);
-                    })
-                }
-            }).finally(() => {
-                this.loginLoading = false;
-            });
-
             this.$watch('jobName', debounce(() => {
                 this.pagination.pageIndex = 1;
                 this.queryList();
@@ -548,6 +528,7 @@
                 this.operate = 'update';
                 let _form = Object.assign({}, row);
                 this.messageForm = _form;
+                this.initDialog();
             },
             createJob(row) {
                 console.log(row);
@@ -555,12 +536,33 @@
                 this.operate = 'create';
                 let _form = Object.assign({}, row);
                 this.messageForm = _form;
+                this.initDialog();
             },
             closeFormDialog() {
                 this.messageVisible = false;
                 this.$refs['messageForm'].resetFields();
             },
+            initDialog(){
+                this.$http.get('/worker/getWorkerGroup').then(({body}) => {
+                    if (body.errorCode === 200) {
+                        body.data.forEach(element => {
+                            this.workerGroupOption.push(element);
+                        })
+                    }
+                }).finally(() => {
+                    this.loginLoading = false;
+                });
 
+                this.$http.get('/job/getAllJobs').then(({body}) => {
+                    if (body.errorCode === 200) {
+                        body.data.forEach(element => {
+                            this.jobIdOption.push(element);
+                        })
+                    }
+                }).finally(() => {
+                    this.loginLoading = false;
+                });
+            },
             saveJob() {
                 console.log('save');
                 let params = {

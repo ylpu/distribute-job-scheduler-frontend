@@ -48,7 +48,7 @@
                             min-width="220">
                         <template slot-scope="scope">
 
-                            <el-button type="text" size="mini" :disabled="isDisabled(scope.row.jobType)"
+                            <el-button type="text" size="mini" :disabled="isKillDisabled(scope.row.jobType)"
                                        @click="kill(scope.row.id)">杀任务
                             </el-button>
                             <el-button type="text" size="mini"
@@ -63,7 +63,7 @@
                             <el-button type="text" size="mini"
                                        @click="markFail(scope.row.id)">标识失败
                             </el-button>
-                            <el-button type="text" size="mini"
+                            <el-button type="text" size="mini" :disabled="isLogDisabled(scope.row.logUrl)"
                                        @click="viewLog(scope.row.logUrl)">日志
                             </el-button>
                         </template>
@@ -253,8 +253,15 @@
                 this.content='';
                 this.logVisible = false;
             },
-            isDisabled(jobType) {
+            isKillDisabled(jobType) {
                 if (jobType == 'HTTP'){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            isLogDisabled(logUrl) {
+                if (logUrl == '' || logUrl == null){
                     return true;
                 }else{
                     return false;
