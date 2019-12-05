@@ -38,7 +38,7 @@
     beforeCreate() {
       this.$http.get('/user/current-user',{}).then(({body}) => {
         console.log(body);
-        if (body.errorCode === 200) {
+        if (body.errorCode === 200 &&  body.data != null) {
         } else {
           window.location.href = '/login.html';
         }

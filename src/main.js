@@ -32,6 +32,19 @@ Vue.use(Vue2OrgTree);
 //   }
 // });
 
+router.beforeEach((to, from, next) => {
+  if (sessionStorage.username) { //如果有就直接到首页咯
+    next();
+  } else {
+    if (to.path == '/login.html') { //如果是登录页面路径，就直接next()
+      next();
+    } else { //不然就跳转到登录；
+      window.location.href = '/login.html';
+    }
+
+  }
+})
+
 Vue.use(VueResource);
   new Vue({
     el: '#app',

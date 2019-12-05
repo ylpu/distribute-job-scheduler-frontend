@@ -56,8 +56,8 @@
                     if (valid) {
                         this.$http.post(url, {}).then(({body}) => {
                             if (body.errorCode === 200) {
-                                localStorage.username = body.data.userName;
-                                window.location.href = "/job";
+                                sessionStorage.username = body.data.userName;
+                                window.location.href = "/chart";
                             } else {
                                 this.$message.error(body.errorMsg);
                             }

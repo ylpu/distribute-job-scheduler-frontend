@@ -9,7 +9,7 @@ Vue.use(Router);
 const routerConfig = [
     {
         path: '/',
-        redirect: '/job',
+        redirect: '/chart',
 
     },
     {
