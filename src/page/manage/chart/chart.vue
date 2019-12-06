@@ -62,6 +62,8 @@
                                 }
                             ]
                         });
+                    }else{
+                        this.$message.error(body.errorMsg);
                     }
                 }).finally(() => {
                     this.loginLoading = false;
