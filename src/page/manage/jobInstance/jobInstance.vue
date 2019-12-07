@@ -45,7 +45,7 @@
                     <el-table-column
                             fixed="right"
                             label="操作"
-                            min-width="220">
+                            min-width="260">
                         <template slot-scope="scope">
 
                             <el-button type="text" size="mini" :disabled="isKillDisabled(scope.row.jobType,scope.row.taskState)"
@@ -138,6 +138,12 @@
                     {
                         prop: 'worker',
                         label: '实例执行节点',
+                        'min-width': 120,
+                        align: 'center',
+                    },
+                    {
+                        prop: 'retryTimes',
+                        label: '重试次数',
                         'min-width': 120,
                         align: 'center',
                     }
