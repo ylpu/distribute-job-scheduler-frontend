@@ -230,15 +230,12 @@
             },
             viewLog(url) {
                 let params = {
-                    logPath: url
+                    logUrl: url
                 };
                 this.$http.get('/jobInstance/viewLog', {params: params}).then(({body}) => {
-                    if (body.errorCode === 200) {
-                        this.content = body.data.replace(/\n/g,"<br/>");
-                        this.logVisible = true;
-                    } else {
-                        this.$message.error(body.errorMsg);
-                    }
+                    this.logVisible = true;
+                    this.content = body;
+
                 }).finally(() => {
                     this.loginLoading = false;
                 })
