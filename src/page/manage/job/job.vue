@@ -15,7 +15,7 @@
                     <el-option label="spark" value="3">spark</el-option>
                     <el-option label="command" value="4">command</el-option>
                     <el-option label="http" value="5">http</el-option>
-                    <el-option label="python" value="python">python</el-option>
+                    <el-option label="python" value="6">python</el-option>
                 </el-select>
 
                 <el-input placeholder="任务名称" v-model="jobName" class="input-with-select" clearable>
