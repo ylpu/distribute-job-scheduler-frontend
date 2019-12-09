@@ -16,6 +16,7 @@
                     <el-option label="command" value="4">command</el-option>
                     <el-option label="http" value="5">http</el-option>
                     <el-option label="python" value="6">python</el-option>
+                    <el-option label="sql" value="7">sql</el-option>
                 </el-select>
 
                 <el-input placeholder="任务名称" v-model="jobName" class="input-with-select" clearable>
@@ -133,6 +134,7 @@
                                    <el-option label="COMMAND" value="COMMAND">COMMAND</el-option>
                                    <el-option label="HTTP" value="HTTP">HTTP</el-option>
                                    <el-option label="PYTHON" value="PYTHON">PYTHON</el-option>
+                                   <el-option label="SQL" value="SQL">SQL</el-option>
                               </el-select>
                           </el-form-item>
                     </el-col>
