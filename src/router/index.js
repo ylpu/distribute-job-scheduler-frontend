@@ -4,6 +4,7 @@ import job from '@/page/manage/job/job'
 import jobInstance from '@/page/manage/jobInstance/jobInstance'
 import worker from '@/page/manage/worker/worker'
 import chart from '@/page/manage/chart/chart'
+import connection from '@/page/manage/connection/connection'
 
 Vue.use(Router);
 const routerConfig = [
@@ -44,6 +45,15 @@ const routerConfig = [
         name: '资源管理',
         icon: 'el-icon-menu',
         component: worker,
+        meta: {
+            requireAuth: true, // 判断是否需要登录
+        },
+    },
+    {
+        path: '/connection',
+        name: '连接管理',
+        icon: 'el-icon-menu',
+        component: connection,
         meta: {
             requireAuth: true, // 判断是否需要登录
         },

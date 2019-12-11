@@ -54,7 +54,8 @@
               {'path':'/chart', 'name':'任务分布','icon':'el-icon-picture'},
               {'path':'/job', 'name':'任务管理','icon':'el-icon-menu'},
               {'path':'/jobInstance', 'name':'任务实例管理','icon':'el-icon-menu'},
-              {'path':'/worker', 'name':'执行资源','icon':'el-icon-info'}
+              {'path':'/worker', 'name':'执行资源','icon':'el-icon-info'},
+              {'path':'/connection', 'name':'连接管理','icon':'el-icon-info'}
             ];
             console.log(menuList);
             this.routerList = menuList;
