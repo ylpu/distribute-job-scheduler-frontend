@@ -4,6 +4,9 @@
       <img src="../assets/img/navCloseIcon.png">
     </div>
     <div class="header-end">
+      <el-tooltip effect="dark" content="刷新" placement="bottom-start">
+        <el-button icon="el-icon-refresh" type="primary" size="small" @click="refresh"></el-button>
+      </el-tooltip>
       <el-dropdown  trigger="click" @command="handleCommand">
         <span class="el-dropdown-link">
           <span v-html="loginUserName"></span> <i class="el-icon-arrow-down el-icon--right"></i>
@@ -52,6 +55,9 @@
           })
         }
       },
+      refresh(){
+        this.$router.go(0);
+      }
     }
   }
 </script>
