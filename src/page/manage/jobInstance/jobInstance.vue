@@ -7,7 +7,7 @@
                 @handleCurrentChange="handleCurrentChange">
 
             <div slot="banner" class="top-right">
-                <el-select v-model="taskState" placeholder="请选择任务状态" class="right-select" @change="queryTypeChange"
+                <el-select v-model="taskState" placeholder="请选择任务状态" class="right-select" @change="taskStateChange"
                            clearable @clear="queryList">
                     <el-option label="SUBMIT" value="1">SUBMIT</el-option>
                     <el-option label="WAITING" value="3">WAITING</el-option>
@@ -164,7 +164,7 @@
             }, 1000));
         },
         methods: {
-            queryTypeChange(val) {
+            taskStateChange(val) {
                 if (val !== '') {
                     this.taskState = val;
                     this.queryList();

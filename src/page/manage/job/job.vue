@@ -515,9 +515,6 @@
             },
             jobTree(id) {
                 this.jobTreeVisible = true;
-                let params = {
-                    id: id,
-                };
                 this.$http.get('/job/queryTreeById?id='+id).then(({body}) => {
                     if (body.errorCode === 200) {
                         this.treeData = body.data;
@@ -549,7 +546,7 @@
                 this.$refs['messageForm'].resetFields();
             },
             initDialog(){
-                this.$http.get('/worker/getWorkerGroup').then(({body}) => {
+                this.$http.get('/worker/getWorkerGroups?workerStatus=3').then(({body}) => {
                     if (body.errorCode === 200) {
                         body.data.forEach(element => {
                             this.workerGroupOption.push(element);

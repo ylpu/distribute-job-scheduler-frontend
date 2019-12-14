@@ -7,11 +7,13 @@
                 @handleCurrentChange="handleCurrentChange">
             <div slot="banner" class="top-right">
 
-                <el-select v-model="workerGroup" placeholder="请选择执行组" class="right-select" @change="queryTypeChange"
-                           clearable @clear="queryList">
-                    <el-option label="hive" value="hive">hive</el-option>
-                    <el-option label="spark" value="spark">spark</el-option>
-                    <el-option label="shell" value="shell">shell</el-option>
+                <el-select v-model="workerGroup" placeholder="请选择执行组" class="right-select" @change="workerGroupChange">
+                    <el-option
+                            v-for="item in workerGroupOption"
+                            :key="item"
+                            :label="item"
+                            :value="item">
+                    </el-option>
                 </el-select>
 
                 <el-input placeholder="任务指执行机器" v-model="worker" class="input-with-select" clearable>
@@ -65,6 +67,7 @@
                 messageVisible: false,
                 messageLabelWidth: '90px',
                 tableData: [],
+                workerGroupOption :[],
                 loginLoading: false,
                 tableHeader: [
                     {
@@ -114,15 +117,24 @@
             this.queryList();
         },
         mounted() {
+            this.$http.get('/worker/getWorkerGroups').then(({body}) => {
+                if (body.errorCode === 200) {
+                    body.data.forEach(element => {
+                        this.workerGroupOption.push(element);
+                    })
+                }
+            }).finally(() => {
+                this.loginLoading = false;
+            });
             this.$watch('worker', debounce(() => {
                 this.pagination.pageIndex = 1;
                 this.queryList();
             }, 1000));
         },
         methods: {
-            queryTypeChange(val) {
+            workerGroupChange(val) {
                 if (val !== '') {
-                    this.taskState = val;
+                    this.workerGroup = val;
                     this.queryList();
                 }
             },
