@@ -122,7 +122,7 @@
                 <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="任务责任人"  prop="ownerIds">
-                            <el-input v-model="messageForm.ownerIds" placeholder="请输入任务责任人"></el-input>
+                            <el-input v-model="messageForm.ownerIds" placeholder="请输入任务责任人,以逗号隔开"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col span="12">
