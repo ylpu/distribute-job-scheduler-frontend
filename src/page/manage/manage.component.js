@@ -31,7 +31,7 @@ export default {
             this.queryList();
         },
         delete(url, params) {
-            this.$confirm('该信息删除后无法恢复，确定要删除吗？', '提示', {
+            this.$confirm('确定要删除吗？', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',
