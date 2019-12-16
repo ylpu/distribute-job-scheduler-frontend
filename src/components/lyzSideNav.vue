@@ -60,6 +60,7 @@
               ];
             }else{
               menuList = [
+                {'path':'/chart', 'name':'任务分布','icon':'el-icon-picture'},
                 {'path':'/job', 'name':'任务管理','icon':'el-icon-menu'},
                 {'path':'/jobInstance', 'name':'任务实例管理','icon':'el-icon-menu'},
               ];
