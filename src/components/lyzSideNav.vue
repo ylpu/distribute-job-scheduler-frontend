@@ -31,34 +31,40 @@
     data(){
       return {
        routerList:[],
-
-
       }
     },
     beforeCreate() {
       this.$http.get('/user/current-user',{}).then(({body}) => {
         console.log(body);
         if (body.errorCode === 200 &&  body.data != null) {
+            this.getLeftMenus(body.data.roleNames);
         } else {
           window.location.href = '/login.html';
         }
       });
     },
-    created(){
-      this.getLeftMenus();
-    },
+
     computed:mapState(['collapse']),
     methods:{
-      getLeftMenus(){
-            let menuList = [
-              {'path':'/chart', 'name':'任务分布','icon':'el-icon-picture'},
-              {'path':'/job', 'name':'任务管理','icon':'el-icon-menu'},
-              {'path':'/jobInstance', 'name':'任务实例管理','icon':'el-icon-menu'},
-              {'path':'/worker', 'name':'执行资源','icon':'el-icon-info'},
-              {'path':'/connection', 'name':'连接管理','icon':'el-icon-menu'},
-              {'path':'/user', 'name':'用户管理','icon':'el-icon-menu'},
-              {'path':'/role', 'name':'角色管理','icon':'el-icon-menu'}
-            ];
+      getLeftMenus(roleNames){
+            let menuList = [];
+            if(roleNames.indexOf("ROLE_ADMIN") >= 0){
+              menuList = [
+                {'path':'/chart', 'name':'任务分布','icon':'el-icon-picture'},
+                {'path':'/job', 'name':'任务管理','icon':'el-icon-menu'},
+                {'path':'/jobInstance', 'name':'任务实例管理','icon':'el-icon-menu'},
+                {'path':'/worker', 'name':'执行资源','icon':'el-icon-info'},
+                {'path':'/connection', 'name':'连接管理','icon':'el-icon-menu'},
+                {'path':'/user', 'name':'用户管理','icon':'el-icon-menu'},
+                {'path':'/role', 'name':'角色管理','icon':'el-icon-menu'}
+              ];
+            }else{
+              menuList = [
+                {'path':'/job', 'name':'任务管理','icon':'el-icon-menu'},
+                {'path':'/jobInstance', 'name':'任务实例管理','icon':'el-icon-menu'},
+                {'path':'/connection', 'name':'连接管理','icon':'el-icon-menu'},
+              ];
+            }
             console.log(menuList);
             this.routerList = menuList;
             this.$store.commit('setRouteList',this.routerList );
