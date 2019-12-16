@@ -62,7 +62,6 @@
               menuList = [
                 {'path':'/job', 'name':'任务管理','icon':'el-icon-menu'},
                 {'path':'/jobInstance', 'name':'任务实例管理','icon':'el-icon-menu'},
-                {'path':'/connection', 'name':'连接管理','icon':'el-icon-menu'},
               ];
             }
             console.log(menuList);
