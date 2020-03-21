@@ -62,7 +62,7 @@
                     pageSize: 10,
                     total: 0,
                 },
-                label: '资源管理',
+                label: '执行器管理',
                 messageForm: {},
                 messageVisible: false,
                 messageLabelWidth: '90px',
