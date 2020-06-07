@@ -10,11 +10,14 @@
                 <el-select v-model="taskState" placeholder="请选择任务状态" class="right-select" @change="taskStateChange"
                            clearable @clear="queryList">
                     <el-option label="SUBMIT" value="1">SUBMIT</el-option>
-                    <el-option label="WAITING" value="3">WAITING</el-option>
-                    <el-option label="RUNNING" value="4">RUNNING</el-option>
-                    <el-option label="KILL" value="5">KILL</el-option>
-                    <el-option label="SUCCESS" value="6">SUCCESS</el-option>
-                    <el-option label="FAIL" value="7">FAIL</el-option>
+                    <el-option label="SCHEDULED" value="2">SCHEDULED</el-option>
+                    <el-option label="WAITING_DEPENDENCY" value="3">WAITING_DEPENDENCY</el-option>
+                    <el-option label="QUEUED" value="4">QUEUED</el-option>
+                    <el-option label="WAITING_RESOURCE" value="5">WAITING_RESOURCE</el-option>
+                    <el-option label="RUNNING" value="6">RUNNING</el-option>
+                    <el-option label="KILL" value="7">KILL</el-option>
+                    <el-option label="SUCCESS" value="8">SUCCESS</el-option>
+                    <el-option label="FAIL" value="9">FAIL</el-option>
                 </el-select>
 
                 <el-input placeholder="任务名称" v-model="jobName" class="input-with-select" clearable>
