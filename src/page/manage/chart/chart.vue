@@ -31,7 +31,7 @@
                     legend: {
                         orient: 'vertical',
                         left: 'left',
-                        data: ['SUBMIT', 'WAITING', 'RUNNING', 'KILL', 'SUCCESS', 'FAIL']
+                        data: ['SUBMIT', 'SCHEDULED', 'WAITING_DEPENDENCY', 'QUEUED', 'WAITING_RESOURCE', 'RUNNING', 'KILL', 'SUCCESS', 'FAIL']
                     },
                     series: []
                 });
