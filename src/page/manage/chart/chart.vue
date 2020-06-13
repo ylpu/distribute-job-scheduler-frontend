@@ -5,15 +5,15 @@
                 <div id="chartPie" style="width:100%; height:300px;"></div>
             </el-col>
             <el-col :span="12">
-                <div id="bar" style="width:100%; height:300px;"></div>
+                <div id="workerChart" style="width:100%; height:300px;"></div>
             </el-col>
         </el-row>
         <el-row>
             <el-col :span="12">
-                <div id="cpuChart" style="width:100%; height:300px;"></div>
+                <div id="jobTypeChart" style="width:100%; height:300px;"></div>
             </el-col>
             <el-col :span="12">
-                <div id="memoryChart" style="width:100%; height:300px;"></div>
+                <div id="workerUsageChart" style="width:100%; height:300px;"></div>
             </el-col>
         </el-row>
     </section>
@@ -25,9 +25,9 @@
         data() {
             return {
                 chartPie: null,
-                bar: null,
-                cpuChart : null,
-                memoryChart : null
+                workerBar: null,
+                taskBar: null,
+                usageChart : null
             }
         },
         methods: {
@@ -50,7 +50,7 @@
                     series: [],
                     color: ['#069f71','#B22222','#8E388E','rgb(113,171,246)','rgb(255,193,134)']
                 });
-                this.$http.get('/jobInstance/getTaskSummary').then(({body}) => {
+                this.$http.get('/chart/getTaskSummary').then(({body}) => {
                     if (body.errorCode === 200) {
                         let seriesData = [];
                         body.data.forEach(item => {
@@ -85,16 +85,16 @@
                 })
             },
             drawBar() {
-                this.bar = echarts.init(document.getElementById("bar"));
+                this.workerBar = echarts.init(document.getElementById("workerChart"));
                 let nameArray = [];
                 let dataArray = [];
-                this.$http.get('/jobInstance/getWorkerSummary').then(({body}) => {
+                this.$http.get('/chart/getWorkerSummary').then(({body}) => {
                     if (body.errorCode === 200) {
                         body.data.forEach(item => {
                             nameArray.push(item.worker);
                             dataArray.push(item.taskCount);
                         })
-                        this.bar.setOption({
+                        this.workerBar.setOption({
                             series: [
                                 {
                                     name     : "name",
@@ -138,107 +138,121 @@
                     this.loginLoading = false;
                 })
             },
-            drawCpuLine() {
-
-                this.cpuChart = echarts.init(document.getElementById('cpuChart'))
-                this.$http.get('/worker/getWorkerCpuUsage').then(({body}) => {
+            drawJobTypeBar() {
+                this.taskBar = echarts.init(document.getElementById("jobTypeChart"));
+                let nameArray = [];
+                let dataArray = [];
+                this.$http.get('/chart/getJobTypeSummary').then(({body}) => {
                     if (body.errorCode === 200) {
-                        this.xdata = [];
-                        this.ydata = [];
                         body.data.forEach(item => {
-                            this.xdata.push(item.worker);
-                            this.ydata.push(item.usage);
+                            nameArray.push(item.jobType);
+                            dataArray.push(item.taskCount);
                         })
-                        this.cpuChart.setOption({
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            legend: {
-                                data: ['节点cpu使用率']
-                            },
-                            grid: {
-                                left: '10%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-
-                            toolbox: {
-                                feature: {
-                                    saveAsImage: {}
+                        this.taskBar.setOption({
+                            series: [
+                                {
+                                    name     : "name",
+                                    type     : "bar",
+                                    barWidth : "60%",
+                                    data     : dataArray,
+                                    itemStyle: {
+                                        normal: {
+                                            color: "#069f71"
+                                        }
+                                    }
                                 }
-                            },
-                            xAxis: {
-                                type: 'category',
-                                boundaryGap: false,
-                                data: this.xdata
-
-                            },
-                            yAxis: {
-                                type: 'value'
-                            },
-
-                            series: [{
-                                name: '节点cpu使用率',
-                                type: 'line',
-                                stack: '节点cpu使用率',
-                                data: this.ydata
-                            }]
+                            ],
+                            xAxis: [
+                                {
+                                    type    : "category",
+                                    data    : nameArray,
+                                    axisTick: {
+                                        alignWithLabel: true
+                                    }
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: "value"
+                                }
+                            ],
+                            title: {
+                                text     : "任务类型分布",
+                                left     : "center",
+                                top      : 20,
+                                textStyle: {
+                                    color: "#000"
+                                }
+                            }
                         });
-
+                    }else{
+                        this.$message.error(body.errorMsg);
                     }
                 }).finally(() => {
                     this.loginLoading = false;
                 })
             },
-            drawMemoryLine() {
-
-                this.memoryChart = echarts.init(document.getElementById('memoryChart'))
-                this.$http.get('/worker/getWorkerMemoryUsage').then(({body}) => {
+            drawWorkerUsageLine() {
+                this.usageChart = echarts.init(document.getElementById('workerUsageChart'))
+                this.memoryData = [];
+                this.$http.get('/chart/getWorkerCpuUsage').then(({body}) => {
                     if (body.errorCode === 200) {
                         this.xdata = [];
-                        this.ydata = [];
+                        this.cpuData = [];
                         body.data.forEach(item => {
                             this.xdata.push(item.worker);
-                            this.ydata.push(item.usage);
+                            this.cpuData.push(item.usage);
                         })
-                        this.memoryChart.setOption({
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            legend: {
-                                data: ['节点内存使用率']
-                            },
-                            grid: {
-                                left: '10%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
+                        this.$http.get('/chart/getWorkerMemoryUsage').then(({body}) => {
+                            if (body.errorCode === 200) {
+                                body.data.forEach(item => {
+                                    this.memoryData.push(item.usage);
+                                })
+                                this.usageChart.setOption({
+                                    tooltip: {
+                                        trigger: 'axis'
+                                    },
+                                    legend: {
+                                        data: ['节点cpu使用率','节点内存使用率']
+                                    },
+                                    grid: {
+                                        left: '10%',
+                                        right: '4%',
+                                        bottom: '3%',
+                                        containLabel: true
+                                    },
 
-                            toolbox: {
-                                feature: {
-                                    saveAsImage: {}
-                                }
-                            },
-                            xAxis: {
-                                type: 'category',
-                                boundaryGap: false,
-                                data: this.xdata
+                                    toolbox: {
+                                        feature: {
+                                            saveAsImage: {}
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category',
+                                        boundaryGap: false,
+                                        data: this.xdata
 
-                            },
-                            yAxis: {
-                                type: 'value'
-                            },
+                                    },
+                                    yAxis: {
+                                        type: 'value'
+                                    },
 
-                            series: [{
-                                name: '节点内存使用率',
-                                type: 'line',
-                                stack: '节点内存使用率',
-                                data: this.ydata
-                            }]
-                        });
-
+                                    series: [{
+                                        name: '节点cpu使用率',
+                                        type: 'line',
+                                        stack: '节点cpu使用率',
+                                        data: this.cpuData
+                                    },{
+                                        name: '节点内存使用率',
+                                        type: 'line',
+                                        stack: '节点内存使用率',
+                                        data: this.memoryData
+                                    }]
+                                });
+                            }
+                        }).finally(() => {
+                            this.loginLoading = false;
+                        })
                     }
                 }).finally(() => {
                     this.loginLoading = false;
@@ -249,8 +263,8 @@
         mounted: function () {
             this.drawPieChart();
             this.drawBar();
-            this.drawCpuLine();
-            this.drawMemoryLine();
+            this.drawJobTypeBar();
+            this.drawWorkerUsageLine();
         },
     }
 </script>

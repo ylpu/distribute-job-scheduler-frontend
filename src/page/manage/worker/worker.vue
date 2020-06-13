@@ -39,6 +39,17 @@
                             :min-width="data['min-width']"
                             :align="data.align">
                     </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            min-width="50">
+                        <template slot-scope="scope">
+
+                            <el-button type="text" size="mini" class="danger-text" :disabled="isDisabled(scope.row.workerStatus)"
+                                       @click="down(scope.row)">下线
+                            </el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </div>
 
@@ -138,6 +149,15 @@
                     this.queryList();
                 }
             },
+            down(row) {
+                console.log('down worker');
+                let params = {
+                };
+                params.host = row.host;
+                params.port = row.port;
+                params.currentWorkerStatus = row.workerStatus;
+                this.save('/worker/markDown', params, 'messageVisible');
+            },
             queryList() {
                 this.loginLoading = true;
                 let params = {
@@ -156,7 +176,14 @@
                 }).finally(() => {
                     this.loginLoading = false;
                 })
-            }
+            },
+            isDisabled(workerState) {
+                if (workerState == 'REMOVED'){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
         }
     }
 </script>
