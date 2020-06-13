@@ -48,7 +48,7 @@
                         data: ['SUBMIT', 'SCHEDULED', 'WAITING_DEPENDENCY', 'QUEUED', 'WAITING_RESOURCE', 'RUNNING', 'KILL', 'SUCCESS', 'FAIL']
                     },
                     series: [],
-                    color: ['#069f71','#B22222','#8E388E','rgb(113,171,246)','rgb(255,193,134)']
+                    color: ['#B22222','#069f71','#8E388E','rgb(113,171,246)','rgb(255,193,134)']
                 });
                 this.$http.get('/chart/getTaskSummary').then(({body}) => {
                     if (body.errorCode === 200) {

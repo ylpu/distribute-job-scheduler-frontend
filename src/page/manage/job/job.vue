@@ -148,8 +148,6 @@
                     <el-col span="12">
                          <el-form-item label="告警类型"  prop="alertTypes">
                               <el-select v-model="messageForm.alertTypes" placeholder="请选择告警类型">
-                                  <el-option label="SMS" value="1">SMS</el-option>
-                                  <el-option label="WEBCHAT" value="WEBCHAT">WEBCHAT</el-option>
                                  <el-option label="EMAIL" value="EMAIL">EMAIL</el-option>
                              </el-select>
                          </el-form-item>
