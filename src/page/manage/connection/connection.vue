@@ -63,6 +63,7 @@
                                 <el-option label="MYSQL" value="MYSQL">MYSQL</el-option>
                                 <el-option label="ORACLE" value="ORACLE">ORACLE</el-option>
                                 <el-option label="SQLSERVER" value="SQLSERVER">SQLSERVER</el-option>
+                                <el-option label="CLICKHOUSE" value="CLICKHOUSE">CLICKHOUSE</el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>

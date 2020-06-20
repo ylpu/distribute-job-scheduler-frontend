@@ -135,6 +135,8 @@
                                    <el-option label="HTTP" value="HTTP">HTTP</el-option>
                                    <el-option label="PYTHON" value="PYTHON">PYTHON</el-option>
                                    <el-option label="SQL" value="SQL">SQL</el-option>
+                                   <el-option label="FLINK" value="FLINK">FLINK</el-option>
+                                   <el-option label="CLICKHOUSE" value="CLICKHOUSE">CLICKHOUSE</el-option>
                               </el-select>
                           </el-form-item>
                     </el-col>
@@ -668,4 +670,7 @@
         color: #F56C6C;
     }
 
+    .bg-tomato {
+        background-color: tomato;
+    }
 </style>
