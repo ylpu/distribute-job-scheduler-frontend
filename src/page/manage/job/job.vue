@@ -17,6 +17,8 @@
                     <el-option label="http" value="5">http</el-option>
                     <el-option label="python" value="6">python</el-option>
                     <el-option label="sql" value="7">sql</el-option>
+                    <el-option label="flink" value="8">flink</el-option>
+                    <el-option label="clickhouse" value="9">clickhouse</el-option>
                 </el-select>
 
                 <el-input placeholder="任务名称" v-model="jobName" class="input-with-select" clearable>
