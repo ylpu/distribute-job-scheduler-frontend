@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import job from '@/page/manage/job/job'
 import jobInstance from '@/page/manage/jobInstance/jobInstance'
 import worker from '@/page/manage/worker/worker'
+import groupStrategy from '@/page/manage/worker/groupStrategy'
 import chart from '@/page/manage/chart/chart'
 import connection from '@/page/manage/connection/connection'
 import user from '@/page/manage/user/user'
@@ -43,8 +44,17 @@ const routerConfig = [
         },
     },
     {
+        path: '/groupStrategy',
+        name: '执行组管理',
+        icon: 'el-icon-menu',
+        component: groupStrategy,
+        meta: {
+            requireAuth: true, // 判断是否需要登录
+        },
+    },
+    {
         path: '/worker',
-        name: '资源管理',
+        name: '执行器管理',
         icon: 'el-icon-menu',
         component: worker,
         meta: {

@@ -6,8 +6,8 @@
                 @handleSizeChange="handleSizeChange"
                 @handleCurrentChange="handleCurrentChange">
             <div slot="banner" class="top-right">
-                <el-button type="primary" size="small" @click="createRole" slot="reference">创建</el-button> &nbsp;
-                <el-input placeholder="角色名" v-model="roleName" class="input-with-select" clearable>
+                <el-button type="primary" size="small" @click="createGroup" slot="reference">新增</el-button> &nbsp;
+                <el-input placeholder="执行组名称" v-model="groupName" class="input-with-select" clearable>
                     <el-button slot="append" icon="el-icon-search" @click="queryList"></el-button>
                 </el-input>
 
@@ -37,10 +37,7 @@
 
                         <template slot-scope="scope">
                             <el-button type="text" size="mini"
-                                       @click="updateRole(scope.row)">修改
-                            </el-button>
-                            <el-button type="text" size="mini"
-                                       @click="deleteRole(scope.row)">删除
+                                       @click="updateGroup(scope.row)">修改
                             </el-button>
                         </template>
                     </el-table-column>
@@ -48,21 +45,33 @@
             </div>
 
         </lyz-layout>
-        <el-dialog :title="operate==='update'?'修改角色':'添加角色'" :visible.sync="messageVisible" width="35%" center
+        <el-dialog :title="operate==='update'?'修改执行组':'添加执行组'" :visible.sync="messageVisible" width="50%" center
                    class="user-dialog" @close='closeFormDialog'>
             <el-form :model="messageForm" :label-width="messageLabelWidth" ref="messageForm" :rules="messageRule"
                      :validate-on-rule-change=false>
-                <el-row gutter="80" justify="start">
-                    <el-col span="20">
-                        <el-form-item label="角色名"  prop="roleName">
-                            <el-input v-model="messageForm.roleName" placeholder="请输入角色名" style="width:360px"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+                <el-row gutter="100" justify="start">
+                        <el-col span="50">
+                            <el-form-item label="执行组名称"  prop="groupName">
+                                <el-input v-model="messageForm.groupName" placeholder="请输入执行组名称"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col span="50">
+                            <el-form-item label="执行组策略"  prop="groupStrategy">
+                                <el-select v-model="messageForm.groupStrategy" placeholder="请选择执行组策略">
+                                    <el-option label="MEMORY" value="MEMORY">MEMORY</el-option>
+                                    <el-option label="CPU" value="CPU">CPU</el-option>
+                                    <el-option label="TASK" value="TASK">TASK</el-option>
+                                    <el-option label="RANDOM" value="RANDOM">RANDOM</el-option>
+                                    <el-option label="ROBIN" value="ROBIN">ROBIN</el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click=closeFormDialog>取 消</el-button>
-                <el-button type="primary" @click=saveRole>确 定</el-button>
+                <el-button type="primary" @click=saveGroup>确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -77,29 +86,38 @@
         name: "server",
         data() {
             return {
-                roleName: '',
+                groupName: '',
                 pagination: {
                     pageIndex: 1,
                     pageSize: 10,
                     total: 0,
                 },
-                label: '角色管理',
+                label: '执行组管理',
                 messageForm: {},
                 messageVisible: false,
-                messageLabelWidth: '90px',
+                messageLabelWidth: '120px',
                 tableData: [],
                 loginLoading: false,
                 operate: '',
                 messageRule: {
-                    roleName: [
-                        {required: true, roleName: '请输入角色名', trigger: 'blur'}
+                    groupName: [
+                        {required: true, message: '请输入执行组名称', trigger: 'blur'}
+                    ],
+                    groupStrategy: [
+                        {required: true, message: '请输入执行组策略', trigger: 'blur'}
                     ]
                 },
                 tableHeader: [
                     {
-                        prop: 'roleName',
-                        label: '角色名',
+                        prop: 'groupName',
+                        label: '执行组名称',
                         'min-width': 80,
+                        align: 'center',
+                    },
+                    {
+                        prop: 'groupStrategy',
+                        label: '执行组策略',
+                        'min-width': 120,
                         align: 'center',
                     }
                 ]
@@ -113,7 +131,7 @@
             this.queryList();
         },
         mounted() {
-            this.$watch('roleName', debounce(() => {
+            this.$watch('groupName', debounce(() => {
                 this.pagination.pageIndex = 1;
                 this.queryList();
             }, 1000));
@@ -128,11 +146,11 @@
             queryList() {
                 this.loginLoading = true;
                 let params = {
-                    roleName: this.roleName,
+                    groupName: this.groupName,
                     pageNo: this.pagination.pageIndex,
                     pageSize: this.pagination.pageSize
                 };
-                this.$http.get('/role/paging', {params: params}).then(({body}) => {
+                this.$http.get('/groupStrategy/paging', {params: params}).then(({body}) => {
                     if (body.errorCode === 200) {
                         this.tableData = responseText(body.data.list);
                         this.pagination.total = body.data.list ? body.data.total : 0;
@@ -147,38 +165,33 @@
                 this.messageVisible = false;
                 this.$refs['messageForm'].resetFields();
             },
-            updateRole(row) {
+            updateGroup(row) {
                 console.log(row);
                 this.messageVisible = true;
                 this.operate = 'update';
                 let _form = Object.assign({}, row);
                 this.messageForm = _form;
             },
-            createRole(row) {
+            createGroup(row) {
                 console.log(row);
                 this.messageVisible = true;
                 this.operate = 'create';
                 let _form = Object.assign({}, row);
                 this.messageForm = _form;
             },
-            deleteRole(row) {
-                let params = {
-                    id: row.id,
-                };
-                this.delete('/role/deleteRole',params);
-            },
-            saveRole() {
+            saveGroup() {
                 console.log('save');
                 let params = {
-                    roleName: this.messageForm.roleName
+                    groupName: this.messageForm.groupName,
+                    groupStrategy: this.messageForm.groupStrategy
                 };
                 this.$refs['messageForm'].validate((valid) => {
                     if (valid) {
                         if (this.messageForm.id) {
                             params.id = this.messageForm.id;
-                            this.save('/role/updateRole', params, 'messageVisible');
+                            this.save('/groupStrategy/updateGroupStrategy', params, 'messageVisible');
                         } else {
-                            this.save('/role/addRole', params, 'messageVisible');
+                            this.save('/groupStrategy/addGroupStrategy', params, 'messageVisible');
                         }
                     }
                 })

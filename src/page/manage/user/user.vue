@@ -85,7 +85,7 @@
                 <el-button type="primary" @click=saveUser>确 定</el-button>
             </div>
         </el-dialog>
-        <el-dialog :title="'设置权限'" :visible.sync="roleVisible" width="65%" center
+        <el-dialog :title="'设置权限'" :visible.sync="roleVisible" width="35%" center
                    class="user-dialog" @close='closeRoleDialog'>
 
             <el-form :model="roleForm" :label-width="messageLabelWidth" ref="roleForm" :rules="roleRule"
@@ -93,7 +93,7 @@
                 <el-row gutter="80" justify="start">
                     <el-col span="24">
                         <el-form-item label="用户角色"  prop="roleIds">
-                            <el-select v-model="roleForm.roleIds" placeholder="权限" class="right-select" multiple>
+                            <el-select v-model="roleForm.roleIds" placeholder="权限" class="right-select" multiple style="width:360px">
                                 <el-option
                                         v-for="item in roleOption"
                                         :key="item.id"
