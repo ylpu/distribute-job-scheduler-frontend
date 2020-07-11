@@ -213,26 +213,10 @@
             <div id="tree">
                 <div class="container">
                     <div class="col-md-10 col-md-offset-1">
-                        <div class="page-header">
-                            <h3>任务依赖图</h3>
-                        </div>
+
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
                                 <form class="form-horizontal row" ref="dagForm">
-                                    <div class="col-md-4">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" v-model="horizontal" /> 横排
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" v-model="collapsable" /> 竖排
-                                            </label>
-                                        </div>
-                                    </div>
                                     <div class="col-md-4">
                                         <div class="checkbox">
                                             <label>
@@ -246,11 +230,11 @@
                         <p>
                             <br />
                         </p>
-                        <div class="text-center">
+
+                        <div style="text-align:center;">
                             <vue2-org-tree
                                     name="jobTree"
                                     :data="treeData"
-                                    :horizontal="horizontal"
                                     :collapsable="collapsable"
                                     :label-class-name="labelClassName"
                                     :render-content="renderContent"
@@ -299,7 +283,7 @@
                 horizontal: true,
                 collapsable: true,
                 expandAll: false,
-                labelClassName: "bg-tomato",
+                labelClassName: "bg-green",
                 messageRule: {
                     jobName: [
                         {required: true, message: '请输入任务名称', trigger: 'blur'}
@@ -663,7 +647,7 @@
     }
 </script>
 
-<style scoped>
+<style type="text/css">
     .main-login {
         height: 100%;
     }
@@ -672,7 +656,7 @@
         color: #F56C6C;
     }
 
-    .bg-tomato {
-        background-color: tomato;
+    .bg-green {
+        background-color: lightgreen;
     }
 </style>
