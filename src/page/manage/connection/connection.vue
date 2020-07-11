@@ -45,21 +45,21 @@
             </div>
 
         </lyz-layout>
-        <el-dialog :title="operate==='update'?'修改连接':'添加连接'" :visible.sync="messageVisible" width="60%" center
+        <el-dialog :title="operate==='update'?'修改连接':'添加连接'" :visible.sync="messageVisible" width="50%" center
                    class="user-dialog" @close='closeFormDialog'>
             <el-form :model="messageForm" :label-width="messageLabelWidth" ref="messageForm" :rules="messageRule"
                      :validate-on-rule-change=false>
-                <el-row gutter="80" justify="start">
+                <el-row gutter="140" justify="start">
                     <el-col span="20">
                         <el-form-item label="连接名称"  prop="connectionId">
-                            <el-input v-model="messageForm.connectionId" placeholder="请输入任务名称"></el-input>
+                            <el-input v-model="messageForm.connectionId" placeholder="请输入任务名称" style="width:690px"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row gutter="80" justify="start">
+                <el-row gutter="140" justify="start">
                     <el-col span="10">
                         <el-form-item label="连接类型"  prop="connectionType">
-                            <el-select v-model="messageForm.connectionType" placeholder="请选择连接类型">
+                            <el-select v-model="messageForm.connectionType" placeholder="请选择连接类型" style="width:300px">
                                 <el-option label="MYSQL" value="MYSQL">MYSQL</el-option>
                                 <el-option label="ORACLE" value="ORACLE">ORACLE</el-option>
                                 <el-option label="SQLSERVER" value="SQLSERVER">SQLSERVER</el-option>
@@ -69,33 +69,33 @@
                     </el-col>
                     <el-col span="10">
                         <el-form-item label="主机名称"  prop="hostname">
-                            <el-input v-model="messageForm.hostname" placeholder="主机名称"></el-input>
+                            <el-input v-model="messageForm.hostname" placeholder="主机名称" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
 
-                <el-row gutter="80" justify="start">
+                <el-row gutter="140" justify="start">
                     <el-col span="10">
                         <el-form-item label="端口号"  prop="port">
-                            <el-input v-model="messageForm.port" placeholder="端口号"></el-input>
+                            <el-input v-model="messageForm.port" placeholder="端口号" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col span="10">
                         <el-form-item label="数据库"  prop="dbSchema">
-                            <el-input v-model="messageForm.dbSchema" placeholder="数据库"></el-input>
+                            <el-input v-model="messageForm.dbSchema" placeholder="数据库" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
 
-                <el-row gutter="80" justify="start">
+                <el-row gutter="140" justify="start">
                     <el-col span="10">
                         <el-form-item label="用户名"  prop="username">
-                            <el-input v-model="messageForm.username" placeholder="用户名"></el-input>
+                            <el-input v-model="messageForm.username" placeholder="用户名" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col span="10">
                         <el-form-item label="密码"  prop="password">
-                            <el-input v-model="messageForm.password" placeholder="密码" type="password"></el-input>
+                            <el-input v-model="messageForm.password" placeholder="密码" type="password" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>

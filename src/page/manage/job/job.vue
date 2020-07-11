@@ -82,12 +82,12 @@
                <el-row gutter="80" justify="start">
                    <el-col span="12">
                         <el-form-item label="任务名称"  prop="jobName">
-                             <el-input v-model="messageForm.jobName" placeholder="请输入任务名称"></el-input>
+                             <el-input v-model="messageForm.jobName" placeholder="请输入任务名称" style="width:300px"></el-input>
                         </el-form-item>
                    </el-col>
                    <el-col span="12">
                        <el-form-item label="任务工作组"  prop="workerGroupname">
-                           <el-select v-model="messageForm.workerGroupname" placeholder="任务工作组" class="right-select">
+                           <el-select v-model="messageForm.workerGroupname" placeholder="任务工作组" class="right-select" style="width:300px">
                                <el-option
                                        v-for="item in workerGroupOption"
                                        :key="item"
@@ -101,7 +101,7 @@
                 <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="任务依赖"  prop="dependIds">
-                            <el-select v-model="messageForm.dependIds" placeholder="任务依赖" class="right-select" multiple style="width:360px">
+                            <el-select v-model="messageForm.dependIds" placeholder="任务依赖" class="right-select" multiple style="width:300px">
                                 <el-option
                                     v-for="item in jobIdOption"
                                     :key="item.id"
@@ -113,7 +113,7 @@
                     </el-col>
                     <el-col span="12">
                          <el-form-item label="任务优先级"  prop="jobPriority">
-                            <el-select v-model="messageForm.jobPriority" placeholder="请选择任务优先级">
+                            <el-select v-model="messageForm.jobPriority" placeholder="请选择任务优先级" style="width:300px">
                                 <el-option label="LOW" value="LOW">LOW</el-option>
                                 <el-option label="MEDIUM" value="MEDIUM">MEDIUM</el-option>
                                 <el-option label="HIGH" value="HIGH">HIGH</el-option>
@@ -124,12 +124,12 @@
                 <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="任务责任人"  prop="ownerIds">
-                            <el-input v-model="messageForm.ownerIds" placeholder="请输入任务责任人,以逗号隔开"></el-input>
+                            <el-input v-model="messageForm.ownerIds" placeholder="请输入任务责任人,以逗号隔开" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col span="12">
                          <el-form-item label="任务类型"  prop="jobType">
-                              <el-select v-model="messageForm.jobType" placeholder="请选择任务类型">
+                              <el-select v-model="messageForm.jobType" placeholder="请选择任务类型" style="width:300px">
                                    <el-option label="SHELL" value="SHELL">SHELL</el-option>
                                    <el-option label="HIVE" value="HIVE">HIVE</el-option>
                                    <el-option label="SPARK" value="SPARK">SPARK</el-option>
@@ -146,12 +146,12 @@
                 <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="任务告警人"  prop="alertUsers">
-                            <el-input v-model="messageForm.alertUsers" placeholder="请输入任务告警人"></el-input>
+                            <el-input v-model="messageForm.alertUsers" placeholder="请输入任务告警人" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col span="12">
                          <el-form-item label="告警类型"  prop="alertTypes">
-                              <el-select v-model="messageForm.alertTypes" placeholder="请选择告警类型">
+                              <el-select v-model="messageForm.alertTypes" placeholder="请选择告警类型" style="width:300px">
                                  <el-option label="EMAIL" value="EMAIL">EMAIL</el-option>
                              </el-select>
                          </el-form-item>
@@ -160,12 +160,12 @@
                 <el-row gutter="80" justify="start">
                     <el-col span="12">
                          <el-form-item label="调度时间"  prop="scheduleCron">
-                             <el-input v-model="messageForm.scheduleCron" placeholder="调度时间,cron表达式"></el-input>
+                             <el-input v-model="messageForm.scheduleCron" placeholder="调度时间,cron表达式" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col span="12">
                          <el-form-item label="任务周期"  prop="jobCycle">
-                            <el-select v-model="messageForm.jobCycle" placeholder="请选择任务周期">
+                            <el-select v-model="messageForm.jobCycle" placeholder="请选择任务周期" style="width:300px">
                                 <el-option label="MINUTE" value="MINUTE">MINUTE</el-option>
                                 <el-option label="HOUR" value="HOUR">HOUR</el-option>
                                 <el-option label="DAY" value="DAY">DAY</el-option>
@@ -179,26 +179,26 @@
                 <el-row gutter="80" justify="start">
                     <el-col span="12">
                         <el-form-item label="重试次数"  prop="maxRetrytimes">
-                            <el-input v-model="messageForm.maxRetrytimes" placeholder="重试次数"></el-input>
+                            <el-input v-model="messageForm.maxRetrytimes" placeholder="重试次数" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col span="8">
                         <el-form-item label="超时时间"  prop="executionTimeout">
-                            <el-input v-model="messageForm.executionTimeout" placeholder="超时时间"></el-input>
+                            <el-input v-model="messageForm.executionTimeout" placeholder="超时时间" style="width:300px"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row gutter="80" justify="start">
                     <el-col span="21">
                         <el-form-item label="任务描述"  prop="description">
-                            <el-input v-model="messageForm.description" placeholder="请输入任务描述"></el-input>
+                            <el-input v-model="messageForm.description" placeholder="请输入任务描述" style="width:860px"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row gutter="80" justify="start" >
                     <el-col span="21">
                         <el-form-item label="任务配置"  prop="jobConfiguration">
-                            <el-input type="textarea"  :autosize="{minRows:5}" v-model="messageForm.jobConfiguration" clearable placeholder="请输入任务配置"></el-input>
+                            <el-input type="textarea"  :autosize="{minRows:5}" v-model="messageForm.jobConfiguration" clearable placeholder="请输入任务配置" style="width:860px"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
