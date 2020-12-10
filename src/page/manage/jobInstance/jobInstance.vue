@@ -58,9 +58,6 @@
                                        @click="rerun(scope.row.id)">重跑
                             </el-button>
                             <el-button type="text" size="mini" :disabled="isActionDisabled(scope.row.jobReleasestate)"
-                                       @click="rerunAll(scope.row.id)">重跑所有
-                            </el-button>
-                            <el-button type="text" size="mini" :disabled="isActionDisabled(scope.row.jobReleasestate)"
                                        @click="markSuccess(scope.row.id)">标识成功
                             </el-button>
                             <el-button type="text" size="mini" :disabled="isActionDisabled(scope.row.jobReleasestate)"

@@ -88,6 +88,12 @@
                         align: 'center',
                     },
                     {
+                        prop: 'port',
+                        label: '执行机器端口',
+                        'min-width': 80,
+                        align: 'center',
+                    },
+                    {
                         prop: 'workerGroup',
                         label: '执行机器组',
                         'min-width': 120,
