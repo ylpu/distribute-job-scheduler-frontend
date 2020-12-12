@@ -7,5 +7,5 @@ thalas 任务调度前端，用户可以通过界面添加，调度，修改任�
       * cnpm install echarts -S
       * cnpm install -D less-loader less
 # 启动
-   * 进入项目，先执行npm install，然后执行npm run dev
+   * 进入项目，先执行npm install，copy vue2-org-tree到项目的node_modules下面，然后执行npm run dev
    * 输入http://localhost:8088/ ，输入用户名test,密码test
