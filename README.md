@@ -5,8 +5,8 @@ thalas 任务调度前端，用户可以通过界面添加，调度，修改任�
    * git clone https://github.com/ylpu/distribute-job-scheduler-frontend.git
    * 进入项目并安装插件
       * npm install
-      * cnpm install echarts -S
-      * cnpm install -D less-loader less
+      * npm install echarts -S
+      * npm install -D less-loader less
       * 把external_modules下面的vue2-org-tree copy到node_modules下面
 # 启动
    * 进入项目，执行npm run dev
