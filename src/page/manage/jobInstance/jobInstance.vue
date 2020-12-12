@@ -11,6 +11,8 @@
                            clearable @clear="queryList">
                     <el-option label="SUBMIT" value="1">SUBMIT</el-option>
                     <el-option label="SCHEDULED" value="2">SCHEDULED</el-option>
+                    <el-option label="WAITING_DEPENDENCY" value="3">WAITING_DEPENDENCY</el-option>
+                    <el-option label="QUEUED" value="4">QUEUED</el-option>
                     <el-option label="WAITING_RESOURCE" value="5">WAITING_RESOURCE</el-option>
                     <el-option label="RUNNING" value="6">RUNNING</el-option>
                     <el-option label="KILL" value="7">KILL</el-option>
