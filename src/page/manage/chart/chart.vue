@@ -13,7 +13,7 @@
                 <div id="jobTypeChart" style="width:100%; height:300px;"></div>
             </el-col>
             <el-col :span="12">
-                <div id="workerUsageChart" style="width:100%; height:300px;"></div>
+                <div id="masterUsageChart" style="width:100%; height:300px;"></div>
             </el-col>
         </el-row>
     </section>
@@ -192,28 +192,28 @@
                     this.loginLoading = false;
                 })
             },
-            drawWorkerUsageLine() {
-                this.usageChart = echarts.init(document.getElementById('workerUsageChart'))
+            drawMasterUsageLine() {
+                this.usageChart = echarts.init(document.getElementById('masterUsageChart'))
                 this.memoryData = [];
-                this.$http.get('/chart/getWorkerCpuUsage').then(({body}) => {
+                this.$http.get('/chart/getMasterCpuUsage').then(({body}) => {
                     if (body.errorCode === 200) {
                         this.xdata = [];
                         this.cpuData = [];
                         body.data.forEach(item => {
-                            this.xdata.push(item.worker);
-                            this.cpuData.push(item.usage);
+                            this.xdata.push(item.hostName);
+                            this.cpuData.push(item.value);
                         })
-                        this.$http.get('/chart/getWorkerMemoryUsage').then(({body}) => {
+                        this.$http.get('/chart/getMasterMemoryUsage').then(({body}) => {
                             if (body.errorCode === 200) {
                                 body.data.forEach(item => {
-                                    this.memoryData.push(item.usage);
+                                    this.memoryData.push(item.value);
                                 })
                                 this.usageChart.setOption({
                                     tooltip: {
                                         trigger: 'axis'
                                     },
                                     legend: {
-                                        data: ['节点cpu使用率','节点内存使用率']
+                                        data: ['master节点cpu使用率','master节点内存使用率']
                                     },
                                     grid: {
                                         left: '10%',
@@ -264,7 +264,7 @@
             this.drawPieChart();
             this.drawBar();
             this.drawJobTypeBar();
-            this.drawWorkerUsageLine();
+            this.drawMasterUsageLine();
         },
     }
 </script>
