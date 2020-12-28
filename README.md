@@ -10,4 +10,4 @@ thalas 任务调度前端，用户可以通过界面添加，调度，修改任�
       * 把external_modules下面的vue2-org-tree copy到node_modules下面
 # 启动
    * 进入项目，执行npm run dev
-   * 输入http://localhost:8088/ ，输入用户名test,密码test
+   * 输入http://localhost:8088/ ，输入用户名和密码
