@@ -39,7 +39,7 @@
                             :min-width="data['min-width']"
                             :align="data.align">
                     </el-table-column>
-                    
+
                 </el-table>
             </div>
 
@@ -63,7 +63,7 @@
                     pageSize: 10,
                     total: 0,
                 },
-                label: '执行器管理',
+                label: '节点管理',
                 messageForm: {},
                 messageVisible: false,
                 messageLabelWidth: '90px',
@@ -73,19 +73,25 @@
                 tableHeader: [
                     {
                         prop: 'host',
-                        label: '执行机器',
+                        label: '节点名称',
                         'min-width': 80,
                         align: 'center',
                     },
                     {
                         prop: 'port',
-                        label: '执行机器端口',
+                        label: '节点端口',
                         'min-width': 80,
                         align: 'center',
                     },
                     {
                         prop: 'workerGroup',
                         label: '执行机器组',
+                        'min-width': 120,
+                        align: 'center',
+                    },
+                    {
+                        prop: 'workerType',
+                        label: '节点类型',
                         'min-width': 120,
                         align: 'center',
                     },

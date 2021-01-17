@@ -12,9 +12,6 @@
             <el-col :span="12">
                 <div id="jobTypeChart" style="width:100%; height:300px;"></div>
             </el-col>
-            <el-col :span="12">
-                <div id="masterUsageChart" style="width:100%; height:300px;"></div>
-            </el-col>
         </el-row>
     </section>
 </template>
@@ -191,72 +188,6 @@
                 }).finally(() => {
                     this.loginLoading = false;
                 })
-            },
-            drawMasterUsageLine() {
-                this.usageChart = echarts.init(document.getElementById('masterUsageChart'))
-                this.memoryData = [];
-                this.$http.get('/chart/getMasterCpuUsage').then(({body}) => {
-                    if (body.errorCode === 200) {
-                        this.xdata = [];
-                        this.cpuData = [];
-                        body.data.forEach(item => {
-                            this.xdata.push(item.hostName);
-                            this.cpuData.push(item.value);
-                        })
-                        this.$http.get('/chart/getMasterMemoryUsage').then(({body}) => {
-                            if (body.errorCode === 200) {
-                                body.data.forEach(item => {
-                                    this.memoryData.push(item.value);
-                                })
-                                this.usageChart.setOption({
-                                    tooltip: {
-                                        trigger: 'axis'
-                                    },
-                                    legend: {
-                                        data: ['master节点cpu使用率','master节点内存使用率']
-                                    },
-                                    grid: {
-                                        left: '10%',
-                                        right: '4%',
-                                        bottom: '3%',
-                                        containLabel: true
-                                    },
-
-                                    toolbox: {
-                                        feature: {
-                                            saveAsImage: {}
-                                        }
-                                    },
-                                    xAxis: {
-                                        type: 'category',
-                                        boundaryGap: false,
-                                        data: this.xdata
-
-                                    },
-                                    yAxis: {
-                                        type: 'value'
-                                    },
-
-                                    series: [{
-                                        name: '节点cpu使用率',
-                                        type: 'line',
-                                        stack: '节点cpu使用率',
-                                        data: this.cpuData
-                                    },{
-                                        name: '节点内存使用率',
-                                        type: 'line',
-                                        stack: '节点内存使用率',
-                                        data: this.memoryData
-                                    }]
-                                });
-                            }
-                        }).finally(() => {
-                            this.loginLoading = false;
-                        })
-                    }
-                }).finally(() => {
-                    this.loginLoading = false;
-                })
             }
         },
 
@@ -264,7 +195,6 @@
             this.drawPieChart();
             this.drawBar();
             this.drawJobTypeBar();
-            this.drawMasterUsageLine();
         },
     }
 </script>
