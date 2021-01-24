@@ -12,6 +12,9 @@
             <el-col :span="12">
                 <div id="jobTypeChart" style="width:100%; height:300px;"></div>
             </el-col>
+            <el-col :span="12">
+                <div id="dateChart" style="width:100%; height:300px;"></div>
+            </el-col>
         </el-row>
     </section>
 </template>
@@ -24,6 +27,7 @@
                 chartPie: null,
                 workerBar: null,
                 taskBar: null,
+                dateBar: null,
                 usageChart : null
             }
         },
@@ -188,13 +192,68 @@
                 }).finally(() => {
                     this.loginLoading = false;
                 })
-            }
+            },
+          drawDateBar() {
+            this.dateBar = echarts.init(document.getElementById("dateChart"));
+            let nameArray = [];
+            let dataArray = [];
+            this.$http.get('/chart/getDateSummary').then(({body}) => {
+              if (body.errorCode === 200) {
+                body.data.forEach(item => {
+                  nameArray.push(item.date);
+                  dataArray.push(item.taskCount);
+                })
+                this.dateBar.setOption({
+                  series: [
+                    {
+                      name     : "name",
+                      type     : "bar",
+                      barWidth : "60%",
+                      data     : dataArray,
+                      itemStyle: {
+                        normal: {
+                          color: "#069f71"
+                        }
+                      }
+                    }
+                  ],
+                  xAxis: [
+                    {
+                      type    : "category",
+                      data    : nameArray,
+                      axisTick: {
+                        alignWithLabel: true
+                      }
+                    }
+                  ],
+                  yAxis: [
+                    {
+                      type: "value"
+                    }
+                  ],
+                  title: {
+                    text     : "任务时间分布",
+                    left     : "center",
+                    top      : 20,
+                    textStyle: {
+                      color: "#000"
+                    }
+                  }
+                });
+              }else{
+                this.$message.error(body.errorMsg);
+              }
+            }).finally(() => {
+              this.loginLoading = false;
+            })
+          }
         },
 
         mounted: function () {
             this.drawPieChart();
             this.drawBar();
             this.drawJobTypeBar();
+            this.drawDateBar();
         },
     }
 </script>
